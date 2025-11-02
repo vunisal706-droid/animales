@@ -7,9 +7,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>Capitulín - Aventura en la Selva</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23FFD700'/%3E%3Ccircle cx='35' cy='40' r='5' fill='%23333'/%3E%3Ccircle cx='65' cy='40' r='5' fill='%23333'/%3E%3Cpath d='M 35 60 Q 50 70 65 60' stroke='%23333' stroke-width='3' fill='none'/%3E%3Cpath d='M 30 20 Q 35 10 40 20' fill='%238B4513'/%3E%3Cpath d='M 60 20 Q 65 10 70 20' fill='%238B4513'/%3E%3C/svg%3E">
-    
     <style>
         * {
             margin: 0;
@@ -33,17 +30,48 @@
             height: 100%;
         }
 
-        canvas {
-            display: block;
+        .touch-controls {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 200;
+            pointer-events: none;
         }
 
-        input, select, textarea {
-            font-size: 16px !important;
+        .touch-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            border: 3px solid #2C5F2D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            user-select: none;
+            pointer-events: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .touch-btn:active {
+            background: rgba(200, 255, 200, 0.9);
+            transform: scale(0.95);
+        }
+
+        .left-controls {
+            display: flex;
+            gap: 15px;
         }
 
         @media (max-width: 768px) {
-            body {
-                font-size: 14px;
+            .touch-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -64,83 +92,222 @@
           
           init() {
             if (!this.audioContext) {
-              this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+              try {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+              } catch(e) {
+                console.log('Audio no disponible');
+              }
             }
           },
 
           playSuccess() {
-            this.init();
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.value = 523.25;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.5);
-            
-            const oscillator2 = this.audioContext.createOscillator();
-            const gainNode2 = this.audioContext.createGain();
-            
-            oscillator2.connect(gainNode2);
-            gainNode2.connect(this.audioContext.destination);
-            
-            oscillator2.frequency.value = 659.25;
-            oscillator2.type = 'sine';
-            
-            gainNode2.gain.setValueAtTime(0.3, this.audioContext.currentTime + 0.1);
-            gainNode2.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.6);
-            
-            oscillator2.start(this.audioContext.currentTime + 0.1);
-            oscillator2.stop(this.audioContext.currentTime + 0.6);
-          },
-
-          playCollect() {
-            this.init();
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.value = 800;
-            oscillator.type = 'square';
-            
-            gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.2);
-          },
-
-          playLevelComplete() {
-            this.init();
-            for (let i = 0; i < 3; i++) {
+            try {
+              this.init();
+              if (!this.audioContext) return;
+              
               const oscillator = this.audioContext.createOscillator();
               const gainNode = this.audioContext.createGain();
               
               oscillator.connect(gainNode);
               gainNode.connect(this.audioContext.destination);
               
-              oscillator.frequency.value = 523.25 + (i * 100);
+              oscillator.frequency.value = 523.25;
               oscillator.type = 'sine';
               
-              gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime + (i * 0.15));
-              gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + (i * 0.15) + 0.3);
+              gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+              gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
               
-              oscillator.start(this.audioContext.currentTime + (i * 0.15));
-              oscillator.stop(this.audioContext.currentTime + (i * 0.15) + 0.3);
-            }
+              oscillator.start(this.audioContext.currentTime);
+              oscillator.stop(this.audioContext.currentTime + 0.5);
+            } catch(e) {}
+          },
+
+          playCollect() {
+            try {
+              this.init();
+              if (!this.audioContext) return;
+              
+              const oscillator = this.audioContext.createOscillator();
+              const gainNode = this.audioContext.createGain();
+              
+              oscillator.connect(gainNode);
+              gainNode.connect(this.audioContext.destination);
+              
+              oscillator.frequency.value = 800;
+              oscillator.type = 'square';
+              
+              gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
+              gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+              
+              oscillator.start(this.audioContext.currentTime);
+              oscillator.stop(this.audioContext.currentTime + 0.2);
+            } catch(e) {}
           }
         };
 
-        // Configuración de niveles
+        // Función para dibujar personaje
+        const drawCharacter = (ctx, x, y, costume, scale = 1) => {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(scale, scale);
+
+          let bodyColor = '#FFD700';
+          let headColor = '#FFDAB9';
+          let showCape = false;
+          let capeColor = '';
+          let showHammer = false;
+          let showCircle = false;
+          let circleColor = '';
+
+          switch(costume) {
+            case 'superman':
+              bodyColor = '#0047AB';
+              showCape = true;
+              capeColor = '#DC143C';
+              showCircle = true;
+              circleColor = '#DC143C';
+              break;
+            case 'batman':
+              bodyColor = '#2C2C2C';
+              showCape = true;
+              capeColor = '#000000';
+              showCircle = true;
+              circleColor = '#FFD700';
+              break;
+            case 'spiderman':
+              bodyColor = '#DC143C';
+              headColor = '#DC143C';
+              showCircle = true;
+              circleColor = '#000000';
+              break;
+            case 'hulk':
+              bodyColor = '#228B22';
+              headColor = '#228B22';
+              break;
+            case 'thor':
+              bodyColor = '#4169E1';
+              showHammer = true;
+              break;
+            case 'ironman':
+              bodyColor = '#DC143C';
+              headColor = '#FFD700';
+              break;
+            case 'mario':
+              bodyColor = '#FF0000';
+              break;
+          }
+
+          // Capa
+          if (showCape) {
+            ctx.fillStyle = capeColor;
+            ctx.beginPath();
+            ctx.moveTo(5, 10);
+            ctx.lineTo(-5, 10);
+            ctx.lineTo(-8, 25);
+            ctx.lineTo(8, 25);
+            ctx.closePath();
+            ctx.fill();
+          }
+
+          // Piernas
+          ctx.fillStyle = '#4169E1';
+          ctx.fillRect(-4, 20, 3, 12);
+          ctx.fillRect(1, 20, 3, 12);
+
+          // Zapatos
+          ctx.fillStyle = '#8B4513';
+          ctx.fillRect(-5, 32, 4, 3);
+          ctx.fillRect(1, 32, 4, 3);
+
+          // Cuerpo
+          ctx.fillStyle = bodyColor;
+          ctx.fillRect(-6, 8, 12, 14);
+
+          // Círculo en pecho
+          if (showCircle) {
+            ctx.fillStyle = circleColor;
+            ctx.beginPath();
+            ctx.arc(0, 15, 3, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Brazos
+          ctx.fillStyle = bodyColor;
+          ctx.fillRect(-8, 10, 2, 10);
+          ctx.fillRect(6, 10, 2, 10);
+
+          // Manos
+          ctx.fillStyle = headColor;
+          ctx.beginPath();
+          ctx.arc(-7, 20, 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(7, 20, 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Martillo
+          if (showHammer) {
+            ctx.fillStyle = '#808080';
+            ctx.fillRect(8, 18, 2, 8);
+            ctx.fillStyle = '#C0C0C0';
+            ctx.fillRect(6, 16, 6, 4);
+          }
+
+          // Cabeza
+          ctx.fillStyle = headColor;
+          ctx.beginPath();
+          ctx.arc(0, 4, 6, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Pelo moreno
+          if (costume !== 'spiderman' && costume !== 'hulk' && costume !== 'ironman') {
+            ctx.fillStyle = '#3D2817';
+            ctx.beginPath();
+            ctx.ellipse(0, -1, 7, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(-4, 0, 3, 0, Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(4, 0, 3, 0, Math.PI);
+            ctx.fill();
+          }
+
+          // Ojos
+          if (costume === 'ironman') {
+            ctx.fillStyle = '#00FFFF';
+            ctx.fillRect(-3, 2, 2, 2);
+            ctx.fillRect(1, 2, 2, 2);
+          } else {
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(-2, 3, 1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(2, 3, 1, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Sonrisa
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(0, 5, 3, 0, Math.PI);
+          ctx.stroke();
+
+          // Gorra Mario
+          if (costume === 'mario') {
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(-6, -2, 12, 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(0, -1, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.restore();
+        };
+
         const LEVELS = {
           level1: {
             platforms: [
@@ -224,11 +391,13 @@
           const [isJumping, setIsJumping] = useState(false);
           const [cagePositions, setCagePositions] = useState([]);
           const [showLevelComplete, setShowLevelComplete] = useState(false);
+          const [usedAnimals, setUsedAnimals] = useState([]);
           const keysPressed = useRef({});
+          const touchControls = useRef({ left: false, right: false, jump: false });
           const gameLoopRef = useRef(null);
           const canvasRef = useRef(null);
 
-          const animals = [
+          const allAnimals = [
             { name: '🐕 Perro', domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
             { name: '🐈 Gato', domestic: 'domestico', habitat: 'terrestre', diet: 'carnivoro' },
             { name: '🐄 Vaca', domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
@@ -248,7 +417,17 @@
             { name: '🦆 Pato', domestic: 'domestico', habitat: 'acuatico', diet: 'omnivoro' },
             { name: '🐵 Mono', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
             { name: '🐷 Cerdo', domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🐰 Conejo', domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' }
+            { name: '🐰 Conejo', domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
+            { name: '🐺 Lobo', domestic: 'salvaje', habitat: 'terrestre', diet: 'carnivoro' },
+            { name: '🦊 Zorro', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
+            { name: '🦌 Ciervo', domestic: 'salvaje', habitat: 'terrestre', diet: 'herbivoro' },
+            { name: '🐸 Rana', domestic: 'salvaje', habitat: 'acuatico', diet: 'carnivoro' },
+            { name: '🐢 Tortuga', domestic: 'salvaje', habitat: 'acuatico', diet: 'omnivoro' },
+            { name: '🐊 Cocodrilo', domestic: 'salvaje', habitat: 'acuatico', diet: 'carnivoro' },
+            { name: '🦎 Lagarto', domestic: 'salvaje', habitat: 'terrestre', diet: 'carnivoro' },
+            { name: '🦘 Canguro', domestic: 'salvaje', habitat: 'terrestre', diet: 'herbivoro' },
+            { name: '🦡 Tejón', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
+            { name: '🐀 Ratón', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' }
           ];
 
           const costumes = [
@@ -267,154 +446,26 @@
             return LEVELS[levelKey] || LEVELS.level1;
           };
 
-          // Dibujar personaje en canvas
-          const drawCharacter = (ctx, x, y, costume) => {
-            ctx.save();
-            ctx.translate(x, y);
-
-            // Configuración según disfraz
-            let bodyColor = '#FFD700';
-            let headColor = '#FFDAB9';
-            let showCape = false;
-            let capeColor = '';
-            let showHammer = false;
-            let showCircle = false;
-            let circleColor = '';
-            let isGreen = false;
-            let isRobot = false;
-
-            switch(costume) {
-              case 'superman':
-                bodyColor = '#0047AB';
-                showCape = true;
-                capeColor = '#DC143C';
-                showCircle = true;
-                circleColor = '#DC143C';
-                break;
-              case 'batman':
-                bodyColor = '#2C2C2C';
-                showCape = true;
-                capeColor = '#000000';
-                showCircle = true;
-                circleColor = '#FFD700';
-                break;
-              case 'spiderman':
-                bodyColor = '#DC143C';
-                headColor = '#DC143C';
-                showCircle = true;
-                circleColor = '#000000';
-                break;
-              case 'hulk':
-                bodyColor = '#228B22';
-                headColor = '#228B22';
-                isGreen = true;
-                break;
-              case 'thor':
-                bodyColor = '#4169E1';
-                showHammer = true;
-                break;
-              case 'ironman':
-                bodyColor = '#DC143C';
-                headColor = '#FFD700';
-                isRobot = true;
-                break;
-              case 'mario':
-                bodyColor = '#FF0000';
-                headColor = '#FFDAB9';
-                break;
-            }
-
-            // Capa (detrás)
-            if (showCape) {
-              ctx.fillStyle = capeColor;
-              ctx.beginPath();
-              ctx.moveTo(5, 10);
-              ctx.lineTo(-5, 10);
-              ctx.lineTo(-8, 25);
-              ctx.lineTo(8, 25);
-              ctx.closePath();
-              ctx.fill();
-            }
-
-            // Piernas
-            ctx.fillStyle = '#4169E1';
-            ctx.fillRect(-4, 20, 3, 12); // Pierna izquierda
-            ctx.fillRect(1, 20, 3, 12);  // Pierna derecha
-
-            // Zapatos
+          const drawTree = (ctx, x, y) => {
             ctx.fillStyle = '#8B4513';
-            ctx.fillRect(-5, 32, 4, 3);
-            ctx.fillRect(1, 32, 4, 3);
-
-            // Cuerpo
-            ctx.fillStyle = bodyColor;
-            ctx.fillRect(-6, 8, 12, 14);
-
-            // Círculo en el pecho
-            if (showCircle) {
-              ctx.fillStyle = circleColor;
-              ctx.beginPath();
-              ctx.arc(0, 15, 3, 0, Math.PI * 2);
-              ctx.fill();
-            }
-
-            // Brazos
-            ctx.fillStyle = bodyColor;
-            ctx.fillRect(-8, 10, 2, 10); // Brazo izquierdo
-            ctx.fillRect(6, 10, 2, 10);  // Brazo derecho
-
-            // Manos
-            ctx.fillStyle = headColor;
+            ctx.fillRect(x, y, 8, 20);
+            ctx.fillStyle = '#228B22';
             ctx.beginPath();
-            ctx.arc(-7, 20, 2, 0, Math.PI * 2);
+            ctx.arc(x + 4, y, 12, 0, Math.PI * 2);
+            ctx.fill();
+          };
+
+          const drawCloud = (ctx, x, y) => {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.arc(x, y, 15, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(7, 20, 2, 0, Math.PI * 2);
+            ctx.arc(x + 15, y, 20, 0, Math.PI * 2);
             ctx.fill();
-
-            // Martillo de Thor
-            if (showHammer) {
-              ctx.fillStyle = '#808080';
-              ctx.fillRect(8, 18, 2, 8); // Mango
-              ctx.fillStyle = '#C0C0C0';
-              ctx.fillRect(6, 16, 6, 4); // Cabeza del martillo
-            }
-
-            // Cabeza
-            ctx.fillStyle = headColor;
             ctx.beginPath();
-            ctx.arc(0, 4, 6, 0, Math.PI * 2);
+            ctx.arc(x + 30, y, 15, 0, Math.PI * 2);
             ctx.fill();
-
-            // Ojos
-            if (isRobot) {
-              ctx.fillStyle = '#00FFFF';
-              ctx.fillRect(-3, 2, 2, 2);
-              ctx.fillRect(1, 2, 2, 2);
-            } else {
-              ctx.fillStyle = '#000000';
-              ctx.beginPath();
-              ctx.arc(-2, 3, 1, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.beginPath();
-              ctx.arc(2, 3, 1, 0, Math.PI * 2);
-              ctx.fill();
-            }
-
-            // Sonrisa
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(0, 5, 3, 0, Math.PI);
-            ctx.stroke();
-
-            // Pelo/Gorra para Mario
-            if (costume === 'mario') {
-              ctx.fillStyle = '#8B4513';
-              ctx.fillRect(-5, -2, 10, 3);
-            }
-
-            ctx.restore();
           };
 
           useEffect(() => {
@@ -441,7 +492,7 @@
             const handleKeyDown = (e) => {
               keysPressed.current[e.key] = true;
               if ((e.key === 'ArrowUp' || e.key === ' ') && !isJumping && !showQuestion && !showLevelComplete) {
-                setVelocity(v => ({ ...v, y: -12 }));
+                setVelocity(v => ({ ...v, y: -15 }));
                 setIsJumping(true);
               }
             };
@@ -470,16 +521,29 @@
             setCagePositions(newCages);
           };
 
+          const getRandomAnimal = () => {
+            const availableAnimals = allAnimals.filter(animal => !usedAnimals.includes(animal.name));
+            
+            if (availableAnimals.length === 0) {
+              setUsedAnimals([]);
+              return allAnimals[Math.floor(Math.random() * allAnimals.length)];
+            }
+            
+            const randomAnimal = availableAnimals[Math.floor(Math.random() * availableAnimals.length)];
+            setUsedAnimals([...usedAnimals, randomAnimal.name]);
+            return randomAnimal;
+          };
+
           const updateGame = () => {
             const levelData = getCurrentLevelData();
             
             setPlayerPos(prev => {
               let newX = prev.x;
 
-              if (keysPressed.current['ArrowLeft']) {
+              if (keysPressed.current['ArrowLeft'] || touchControls.current.left) {
                 newX -= 5;
               }
-              if (keysPressed.current['ArrowRight']) {
+              if (keysPressed.current['ArrowRight'] || touchControls.current.right) {
                 newX += 5;
               }
 
@@ -489,18 +553,18 @@
             });
 
             setVelocity(prev => {
-              let newVelY = prev.y + 0.5;
+              let newVelY = prev.y + 0.6;
               
               levelData.platforms.forEach(platform => {
                 if (
-                  playerPos.x + 15 > platform.x &&
-                  playerPos.x - 15 < platform.x + platform.width &&
-                  playerPos.y + 35 >= platform.y &&
-                  playerPos.y + 35 <= platform.y + 20 &&
+                  playerPos.x + 20 > platform.x &&
+                  playerPos.x - 20 < platform.x + platform.width &&
+                  playerPos.y + 45 >= platform.y &&
+                  playerPos.y + 45 <= platform.y + 20 &&
                   newVelY >= 0
                 ) {
                   newVelY = 0;
-                  setPlayerPos(p => ({ ...p, y: platform.y - 35 }));
+                  setPlayerPos(p => ({ ...p, y: platform.y - 45 }));
                   setIsJumping(false);
                 }
               });
@@ -510,20 +574,19 @@
 
             setPlayerPos(prev => ({
               ...prev,
-              y: Math.min(prev.y + velocity.y, 465)
+              y: Math.min(prev.y + velocity.y, 455)
             }));
 
             cagePositions.forEach(cage => {
               if (
                 !cage.collected &&
-                Math.abs(playerPos.x - cage.x - 20) < 35 &&
-                Math.abs(playerPos.y - cage.y - 20) < 35
+                Math.abs(playerPos.x - cage.x - 20) < 40 &&
+                Math.abs(playerPos.y - cage.y - 20) < 40
               ) {
                 collectCage(cage.id);
               }
             });
 
-            // Verificar si se completó el nivel
             const allCollected = cagePositions.every(cage => cage.collected);
             if (allCollected && cagePositions.length > 0 && !showLevelComplete) {
               completeLevel();
@@ -539,14 +602,14 @@
               )
             );
 
-            const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+            const randomAnimal = getRandomAnimal();
             setCurrentAnimal(randomAnimal);
             setShowQuestion(true);
           };
 
           const completeLevel = () => {
-            SoundSystem.playLevelComplete();
             setShowLevelComplete(true);
+            setUsedAnimals([]);
           };
 
           const nextLevel = () => {
@@ -558,7 +621,6 @@
               setCagePositions([]);
               setShowLevelComplete(false);
             } else {
-              // Juego completado - volver al menú
               alert('¡Felicidades! ¡Has completado todos los niveles!');
               resetGame();
               setScreen('menu');
@@ -583,7 +645,7 @@
             if (correct) {
               SoundSystem.playSuccess();
               setShowFeedback('correct');
-              setCoins(c => c + 1); // +1 moneda por cada respuesta correcta
+              setCoins(c => c + 1);
               setTotalAnimalsFreed(t => t + 1);
               
               setTimeout(() => {
@@ -637,20 +699,31 @@
             setCurrentAnimal(null);
             setShowFeedback(null);
             setShowLevelComplete(false);
+            setUsedAnimals([]);
           };
 
-          // Renderizar canvas del juego
+          const handleJump = () => {
+            if (!isJumping && !showQuestion && !showLevelComplete) {
+              setVelocity(v => ({ ...v, y: -15 }));
+              setIsJumping(true);
+            }
+          };
+
           useEffect(() => {
             if (screen === 'game' && canvasRef.current) {
               const canvas = canvasRef.current;
               const ctx = canvas.getContext('2d');
               
-              // Limpiar canvas
               ctx.clearRect(0, 0, canvas.width, canvas.height);
 
               const levelData = getCurrentLevelData();
 
-              // Dibujar plataformas
+              // Nubes
+              drawCloud(ctx, 100, 50);
+              drawCloud(ctx, 400, 80);
+              drawCloud(ctx, 650, 40);
+
+              // Plataformas
               ctx.fillStyle = levelData.platformColor;
               levelData.platforms.forEach(platform => {
                 ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
@@ -659,7 +732,12 @@
                 ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
               });
 
-              // Dibujar cajas
+              // Árboles
+              drawTree(ctx, 50, 410);
+              drawTree(ctx, 700, 410);
+              drawTree(ctx, 300, 410);
+
+              // Cajas
               cagePositions.forEach(cage => {
                 if (!cage.collected) {
                   ctx.font = '40px Arial';
@@ -667,8 +745,8 @@
                 }
               });
 
-              // Dibujar personaje
-              drawCharacter(ctx, playerPos.x, playerPos.y, currentCostume);
+              // Personaje
+              drawCharacter(ctx, playerPos.x, playerPos.y, currentCostume, 1.5);
             }
           });
 
@@ -682,9 +760,10 @@
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontFamily: 'Arial, sans-serif'
+                fontFamily: 'Arial, sans-serif',
+                padding: '20px'
               }}>
-                <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🧒</div>
+                <div style={{ fontSize: 'clamp(3rem, 15vw, 5rem)', marginBottom: '20px' }}>🧒</div>
                 <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', color: '#2C5F2D', textShadow: '3px 3px #FFD700', marginBottom: '10px', textAlign: 'center' }}>
                   CAPITULÍN
                 </h1>
@@ -785,39 +864,39 @@
                   🌱 🥩 🍔 Herbívoro, Carnívoro u Omnívoro
                 </button>
 
-                <button
-                  onClick={() => setScreen('stats')}
-                  style={{
-                    fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
-                    padding: '15px 30px',
-                    marginTop: '30px',
-                    backgroundColor: '#FF69B4',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '10px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  📊 Ver Estadísticas
-                </button>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '30px' }}>
+                  <button
+                    onClick={() => setScreen('stats')}
+                    style={{
+                      fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
+                      padding: '15px 30px',
+                      backgroundColor: '#FF69B4',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '10px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    📊 Estadísticas
+                  </button>
 
-                <button
-                  onClick={() => setScreen('shop')}
-                  style={{
-                    fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
-                    padding: '15px 30px',
-                    marginTop: '10px',
-                    backgroundColor: '#FFA500',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '10px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  🛍️ Tienda
-                </button>
+                  <button
+                    onClick={() => setScreen('shop')}
+                    style={{
+                      fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
+                      padding: '15px 30px',
+                      backgroundColor: '#FFA500',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '10px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    🛍️ Tienda
+                  </button>
+                </div>
               </div>
             );
           }
@@ -836,7 +915,7 @@
                 padding: '20px'
               }}>
                 <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 2.5rem)', color: '#FF1493', marginBottom: '30px', textAlign: 'center' }}>
-                  📊 Estadísticas de Capitulín
+                  📊 Estadísticas
                 </h2>
                 
                 <div style={{
@@ -851,10 +930,10 @@
                     🦁 Animales liberados: <strong>{totalAnimalsFreed}</strong>
                   </p>
                   <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', margin: '20px 0', color: '#333' }}>
-                    🎭 Trajes conseguidos: <strong>{ownedCostumes.length}/8</strong>
+                    🎭 Trajes: <strong>{ownedCostumes.length}/8</strong>
                   </p>
                   <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', margin: '20px 0', color: '#333' }}>
-                    🪙 Monedas disponibles: <strong>{coins}</strong>
+                    🪙 Monedas: <strong>{coins}</strong>
                   </p>
                 </div>
 
@@ -872,7 +951,7 @@
                     fontWeight: 'bold'
                   }}
                 >
-                  ⬅️ Volver al Menú
+                  ⬅️ Volver
                 </button>
               </div>
             );
@@ -893,10 +972,10 @@
                 overflowY: 'auto'
               }}>
                 <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 2.5rem)', color: '#8B4513', marginBottom: '20px', textAlign: 'center' }}>
-                  🛍️ Tienda de Trajes
+                  🛍️ Tienda
                 </h2>
                 <p style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', color: '#D2691E', marginBottom: '30px' }}>
-                  Monedas disponibles: 🪙 {coins}
+                  🪙 {coins} monedas
                 </p>
 
                 <div style={{
@@ -904,21 +983,13 @@
                   gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
                   gap: '15px',
                   width: '100%',
-                  maxWidth: '800px',
+                  maxWidth: '600px',
                   marginBottom: '20px'
                 }}>
                   {costumes.map(costume => {
                     const owned = ownedCostumes.includes(costume.id);
                     const canBuy = coins >= costume.price;
                     const isCurrent = currentCostume === costume.id;
-
-                    // Crear mini preview del disfraz
-                    const previewCanvas = document.createElement('canvas');
-                    previewCanvas.width = 60;
-                    previewCanvas.height = 60;
-                    const ctx = previewCanvas.getContext('2d');
-                    drawCharacter(ctx, 30, 30, costume.id);
-                    const previewImage = previewCanvas.toDataURL();
 
                     return (
                       <div
@@ -934,7 +1005,15 @@
                           boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
                         }}
                       >
-                        <img src={previewImage} style={{ width: '60px', height: '60px', marginBottom: '5px' }} />
+                        <div style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: '5px' }}>
+                          {costume.id === 'default' ? '🧒' : 
+                           costume.id === 'superman' ? '🦸' :
+                           costume.id === 'spiderman' ? '🕷️' :
+                           costume.id === 'hulk' ? '💪' :
+                           costume.id === 'thor' ? '⚡' :
+                           costume.id === 'mario' ? '🍄' :
+                           costume.id === 'batman' ? '🦇' : '🤖'}
+                        </div>
                         <div style={{ fontSize: 'clamp(0.8rem, 3vw, 1.2rem)', fontWeight: 'bold', marginBottom: '5px' }}>
                           {costume.name}
                         </div>
@@ -942,14 +1021,14 @@
                           {costume.price === 0 ? 'Gratis' : `🪙 ${costume.price}`}
                         </div>
                         {isCurrent && <div style={{ color: '#FF6347', fontWeight: 'bold', marginTop: '5px', fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)' }}>EQUIPADO</div>}
-                        {owned && !isCurrent && <div style={{ color: '#228B22', fontWeight: 'bold', marginTop: '5px', fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)' }}>Equipar</div>}
+                        {owned && !isCurrent && <div style={{ color: '#228B22', fontWeight: 'bold', marginTop: '5px', fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)' }}>Toca para equipar</div>}
                       </div>
                     );
                   })}
                 </div>
 
                 <button
-                  onClick={() => setScreen('menu')}
+                  onClick={() => gameMode ? setScreen('game') : setScreen('menu')}
                   style={{
                     fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                     padding: '15px 40px',
@@ -962,7 +1041,7 @@
                     marginTop: '20px'
                   }}
                 >
-                  Volver al Menú
+                  {gameMode ? 'Volver al Juego' : 'Volver al Menú'}
                 </button>
               </div>
             );
@@ -995,17 +1074,32 @@
                   <button
                     onClick={() => setScreen('menu')}
                     style={{
-                      padding: '10px 20px',
+                      padding: '10px 15px',
                       backgroundColor: '#FF6347',
                       color: 'white',
                       border: 'none',
                       borderRadius: '10px',
                       cursor: 'pointer',
-                      fontSize: 'clamp(0.8rem, 3vw, 1rem)',
+                      fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
                       fontWeight: 'bold'
                     }}
                   >
-                    🏠 Menú
+                    🏠
+                  </button>
+                  <button
+                    onClick={() => setScreen('shop')}
+                    style={{
+                      padding: '10px 15px',
+                      backgroundColor: '#FFA500',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '10px',
+                      cursor: 'pointer',
+                      fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    🛍️
                   </button>
                 </div>
 
@@ -1030,21 +1124,42 @@
                   style={{
                     border: '5px solid #2C5F2D',
                     borderRadius: '10px',
-                    maxWidth: '95vw',
-                    maxHeight: '70vh',
+                    width: '100vw',
+                    height: 'auto',
+                    maxHeight: '60vh',
                     backgroundColor: '#8FBC8F'
                   }}
                 />
 
-                <div style={{
-                  marginTop: '15px',
-                  fontSize: 'clamp(0.8rem, 3vw, 1.2rem)',
-                  color: '#2C5F2D',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  padding: '0 10px'
-                }}>
-                  Usa las flechas ⬅️ ➡️ ⬆️ para moverte y saltar
+                {/* CONTROLES TÁCTILES */}
+                <div className="touch-controls">
+                  <div className="left-controls">
+                    <div 
+                      className="touch-btn"
+                      onTouchStart={() => touchControls.current.left = true}
+                      onTouchEnd={() => touchControls.current.left = false}
+                      onMouseDown={() => touchControls.current.left = true}
+                      onMouseUp={() => touchControls.current.left = false}
+                    >
+                      ⬅️
+                    </div>
+                    <div 
+                      className="touch-btn"
+                      onTouchStart={() => touchControls.current.right = true}
+                      onTouchEnd={() => touchControls.current.right = false}
+                      onMouseDown={() => touchControls.current.right = true}
+                      onMouseUp={() => touchControls.current.right = false}
+                    >
+                      ➡️
+                    </div>
+                  </div>
+                  <div 
+                    className="touch-btn"
+                    onTouchStart={handleJump}
+                    onClick={handleJump}
+                  >
+                    ⬆️
+                  </div>
                 </div>
 
                 {showLevelComplete && (
@@ -1066,13 +1181,13 @@
                       borderRadius: '20px',
                       textAlign: 'center'
                     }}>
-                      <h2 style={{ fontSize: '3rem', color: '#FFD700', marginBottom: '20px' }}>
+                      <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', color: '#FFD700', marginBottom: '20px' }}>
                         🎉 ¡NIVEL COMPLETADO! 🎉
                       </h2>
                       <button
                         onClick={nextLevel}
                         style={{
-                          fontSize: '1.5rem',
+                          fontSize: 'clamp(1.2rem, 5vw, 1.5rem)',
                           padding: '15px 40px',
                           backgroundColor: '#4CAF50',
                           color: 'white',
@@ -1141,7 +1256,7 @@
                             color: '#333',
                             marginBottom: '20px'
                           }}>
-                            La respuesta correcta es: <strong>{getOptionLabel(gameMode, showFeedback.correct)}</strong>
+                            Respuesta correcta: <strong>{getOptionLabel(gameMode, showFeedback.correct)}</strong>
                           </div>
                         </div>
                       )}
