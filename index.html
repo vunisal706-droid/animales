@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#16a34a">
     <title>Capitulín - Aventura en la Selva</title>
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -15,21 +19,90 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        :root {
+            --color-primary: #16a34a;
+            --color-primary-light: #dcfce7;
+            --color-primary-dark: #15803d;
+            --color-secondary: #f59e0b;
+            --color-secondary-dark: #b45309;
+            --color-accent: #ea580c;
+            --color-accent-dark: #c2410c;
+            --color-bg: #f0fdf4;
+            --color-surface: #ffffff;
+            --color-text: #14532d;
+            --color-text-muted: #4d7c0f;
+            --color-error: #dc2626;
+            --color-error-bg: #fee2e2;
+            --color-success: #16a34a;
+            --color-success-bg: #dcfce7;
+            --color-en: #2563eb;
+        }
+
         html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             touch-action: manipulation;
         }
 
-        #root {
-            width: 100%;
-            height: 100%;
+        #root { width: 100%; height: 100%; }
+
+        /* ===== Botones clay ===== */
+        .clay-btn {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 18px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.1s, box-shadow 0.1s;
+            user-select: none;
+        }
+        .clay-btn:active { transform: translateY(4px); }
+        .clay-btn:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+
+        .btn-green  { background: var(--color-primary);   box-shadow: 0 6px 0 var(--color-primary-dark), 0 10px 16px rgba(0,0,0,0.15); }
+        .btn-green:active  { box-shadow: 0 2px 0 var(--color-primary-dark), 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-orange { background: var(--color-accent);    box-shadow: 0 6px 0 var(--color-accent-dark), 0 10px 16px rgba(0,0,0,0.15); }
+        .btn-orange:active { box-shadow: 0 2px 0 var(--color-accent-dark), 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-amber  { background: var(--color-secondary); box-shadow: 0 6px 0 var(--color-secondary-dark), 0 10px 16px rgba(0,0,0,0.15); }
+        .btn-amber:active  { box-shadow: 0 2px 0 var(--color-secondary-dark), 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-blue   { background: #2563eb;                box-shadow: 0 6px 0 #1d4ed8, 0 10px 16px rgba(0,0,0,0.15); }
+        .btn-blue:active   { box-shadow: 0 2px 0 #1d4ed8, 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-pink   { background: #db2777;                box-shadow: 0 6px 0 #9d174d, 0 10px 16px rgba(0,0,0,0.15); }
+        .btn-pink:active   { box-shadow: 0 2px 0 #9d174d, 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-brown  { background: #92400e;                box-shadow: 0 6px 0 #713f12, 0 10px 16px rgba(0,0,0,0.15); }
+        .btn-brown:active  { box-shadow: 0 2px 0 #713f12, 0 4px 8px rgba(0,0,0,0.1); }
+
+        .clay-card {
+            background: var(--color-surface);
+            border-radius: 24px;
+            box-shadow: 8px 8px 0 0 rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.12);
+            border: 2px solid rgba(0,0,0,0.06);
         }
 
+        /* ===== Animaciones ===== */
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes popIn { 0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+        @keyframes correctPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+        .anim-pop { animation: popIn 0.35s ease-out; }
+        .anim-fade { animation: fadeInUp 0.3s ease-out; }
+        .anim-shake { animation: shake 0.4s ease-in-out; }
+        .anim-bounce { animation: bounce 1.2s ease-in-out infinite; }
+        .anim-float { animation: float 3s ease-in-out infinite; }
+        .anim-correct { animation: correctPulse 0.5s ease-in-out; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+
+        /* ===== Controles táctiles ===== */
         .touch-controls {
             position: fixed;
             bottom: 20px;
@@ -42,37 +115,42 @@
         }
 
         .touch-btn {
-            width: 70px;
-            height: 70px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.8);
-            border: 3px solid #2C5F2D;
+            background: rgba(255, 255, 255, 0.92);
+            border: none;
+            box-shadow: 0 6px 0 rgba(21,128,61,0.55), 0 10px 18px rgba(0,0,0,0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
             user-select: none;
             pointer-events: auto;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.08s, box-shadow 0.08s;
         }
 
         .touch-btn:active {
-            background: rgba(200, 255, 200, 0.9);
-            transform: scale(0.95);
+            background: var(--color-primary-light);
+            transform: translateY(4px) scale(0.96);
+            box-shadow: 0 2px 0 rgba(21,128,61,0.55), 0 4px 8px rgba(0,0,0,0.2);
         }
 
-        .left-controls {
-            display: flex;
-            gap: 15px;
-        }
+        .touch-btn svg { width: 34px; height: 34px; }
+
+        .left-controls { display: flex; gap: 16px; }
 
         @media (max-width: 768px) {
-            .touch-btn {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
+            .touch-btn { width: 66px; height: 66px; }
+            .touch-btn svg { width: 30px; height: 30px; }
+        }
+
+        /* ===== Pantalla título ===== */
+        .title-word {
+            font-size: clamp(2.6rem, 11vw, 4.5rem);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 4px 0 var(--color-primary-dark), 0 8px 18px rgba(0,0,0,0.25);
+            letter-spacing: 3px;
         }
     </style>
 </head>
@@ -86,228 +164,570 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // Sistema de sonido
+        // ============ Sistema de sonido ============
         const SoundSystem = {
           audioContext: null,
-          
           init() {
             if (!this.audioContext) {
               try {
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-              } catch(e) {
-                console.log('Audio no disponible');
-              }
+              } catch(e) {}
             }
           },
-
-          playSuccess() {
+          tone(freq, dur, type = 'sine', vol = 0.25, delay = 0) {
             try {
               this.init();
               if (!this.audioContext) return;
-              
-              const oscillator = this.audioContext.createOscillator();
-              const gainNode = this.audioContext.createGain();
-              
-              oscillator.connect(gainNode);
-              gainNode.connect(this.audioContext.destination);
-              
-              oscillator.frequency.value = 523.25;
-              oscillator.type = 'sine';
-              
-              gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
-              gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
-              
-              oscillator.start(this.audioContext.currentTime);
-              oscillator.stop(this.audioContext.currentTime + 0.5);
+              const t = this.audioContext.currentTime + delay;
+              const osc = this.audioContext.createOscillator();
+              const g = this.audioContext.createGain();
+              osc.connect(g); g.connect(this.audioContext.destination);
+              osc.frequency.value = freq; osc.type = type;
+              g.gain.setValueAtTime(vol, t);
+              g.gain.exponentialRampToValueAtTime(0.01, t + dur);
+              osc.start(t); osc.stop(t + dur);
             } catch(e) {}
           },
-
+          playSuccess() { // arpegio alegre
+            this.tone(523.25, 0.18, 'sine', 0.25, 0);
+            this.tone(659.25, 0.18, 'sine', 0.25, 0.12);
+            this.tone(783.99, 0.35, 'sine', 0.25, 0.24);
+          },
           playCollect() {
-            try {
-              this.init();
-              if (!this.audioContext) return;
-              
-              const oscillator = this.audioContext.createOscillator();
-              const gainNode = this.audioContext.createGain();
-              
-              oscillator.connect(gainNode);
-              gainNode.connect(this.audioContext.destination);
-              
-              oscillator.frequency.value = 800;
-              oscillator.type = 'square';
-              
-              gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
-              gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
-              
-              oscillator.start(this.audioContext.currentTime);
-              oscillator.stop(this.audioContext.currentTime + 0.2);
-            } catch(e) {}
+            this.tone(700, 0.08, 'square', 0.15, 0);
+            this.tone(1000, 0.12, 'square', 0.15, 0.06);
+          },
+          playError() {
+            this.tone(220, 0.25, 'sawtooth', 0.12, 0);
+            this.tone(180, 0.3, 'sawtooth', 0.12, 0.15);
           }
         };
 
-        // Función para dibujar personaje
-        const drawCharacter = (ctx, x, y, costume, scale = 1) => {
+        // ============ Utilidades de dibujo ============
+        const rr = (ctx, x, y, w, h, r) => { // rounded rect path
+          if (typeof r === 'number') r = { tl: r, tr: r, br: r, bl: r };
+          ctx.beginPath();
+          ctx.moveTo(x + r.tl, y);
+          ctx.lineTo(x + w - r.tr, y);
+          ctx.quadraticCurveTo(x + w, y, x + w, y + r.tr);
+          ctx.lineTo(x + w, y + h - r.br);
+          ctx.quadraticCurveTo(x + w, y + h, x + w - r.br, y + h);
+          ctx.lineTo(x + r.bl, y + h);
+          ctx.quadraticCurveTo(x, y + h, x, y + h - r.bl);
+          ctx.lineTo(x, y + r.tl);
+          ctx.quadraticCurveTo(x, y, x + r.tl, y);
+          ctx.closePath();
+        };
+
+        const shade = (hex, amt) => { // aclara/oscurece un hex
+          const n = parseInt(hex.slice(1), 16);
+          let r = (n >> 16) + amt, g = ((n >> 8) & 0xff) + amt, b = (n & 0xff) + amt;
+          r = Math.max(0, Math.min(255, r)); g = Math.max(0, Math.min(255, g)); b = Math.max(0, Math.min(255, b));
+          return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+        };
+
+        // ============ Personaje: Capitulín estilo cartoon ============
+        // Dibujado alrededor del origen; ocupa aprox -16..16 en X, -20..36 en Y
+        const drawCharacter = (ctx, x, y, costume, scale = 1, opts = {}) => {
+          const { facing = 1, walk = 0, jumping = false } = opts;
           ctx.save();
           ctx.translate(x, y);
-          ctx.scale(scale, scale);
+          ctx.scale(scale * facing, scale);
+          ctx.lineJoin = 'round';
+          ctx.lineCap = 'round';
 
-          let bodyColor = '#FFD700';
-          let headColor = '#FFDAB9';
-          let showCape = false;
-          let capeColor = '';
-          let showHammer = false;
-          let showCircle = false;
-          let circleColor = '';
+          // Configuración por traje
+          const C = {
+            default:   { body: '#e11d48', bodyD: '#9f1239', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8', cape: null, mask: null, chest: null, helmet: null },
+            superman:  { body: '#1d4ed8', bodyD: '#1e3a8a', skin: '#fcd9b8', hair: '#1c1917', pants: '#dc2626', cape: '#dc2626', mask: null, chest: '#fbbf24', helmet: null },
+            batman:    { body: '#374151', bodyD: '#1f2937', skin: '#fcd9b8', hair: null, pants: '#111827', cape: '#111827', mask: 'bat', chest: '#fbbf24', helmet: null },
+            spiderman: { body: '#dc2626', bodyD: '#991b1b', skin: '#dc2626', hair: null, pants: '#1d4ed8', cape: null, mask: 'spider', chest: '#111827', helmet: null },
+            hulk:      { body: '#7e22ce', bodyD: '#581c87', skin: '#4ade80', hair: '#166534', pants: '#7e22ce', cape: null, mask: null, chest: null, helmet: null },
+            thor:      { body: '#334155', bodyD: '#1e293b', skin: '#fcd9b8', hair: '#fbbf24', pants: '#475569', cape: '#dc2626', mask: null, chest: '#cbd5e1', helmet: null, hammer: true },
+            ironman:   { body: '#dc2626', bodyD: '#991b1b', skin: '#dc2626', hair: null, pants: '#dc2626', cape: null, mask: 'iron', chest: '#38bdf8', helmet: '#fbbf24' },
+            mario:     { body: '#dc2626', bodyD: '#991b1b', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8', cape: null, mask: null, chest: null, helmet: null, cap: true }
+          }[costume] || null;
+          const cfg = C || {
+            body: '#e11d48', bodyD: '#9f1239', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8'
+          };
 
-          switch(costume) {
-            case 'superman':
-              bodyColor = '#0047AB';
-              showCape = true;
-              capeColor = '#DC143C';
-              showCircle = true;
-              circleColor = '#DC143C';
-              break;
-            case 'batman':
-              bodyColor = '#2C2C2C';
-              showCape = true;
-              capeColor = '#000000';
-              showCircle = true;
-              circleColor = '#FFD700';
-              break;
-            case 'spiderman':
-              bodyColor = '#DC143C';
-              headColor = '#DC143C';
-              showCircle = true;
-              circleColor = '#000000';
-              break;
-            case 'hulk':
-              bodyColor = '#228B22';
-              headColor = '#228B22';
-              break;
-            case 'thor':
-              bodyColor = '#4169E1';
-              showHammer = true;
-              break;
-            case 'ironman':
-              bodyColor = '#DC143C';
-              headColor = '#FFD700';
-              break;
-            case 'mario':
-              bodyColor = '#FF0000';
-              break;
-          }
+          const legSwing = jumping ? 0 : Math.sin(walk) * 5;
+          const armSwing = jumping ? -6 : Math.sin(walk) * 4;
+          const bob = jumping ? -2 : Math.abs(Math.sin(walk)) * 1.5;
+          const OUT = '#3b2417'; // color de contorno cartoon
 
-          // Capa
-          if (showCape) {
-            ctx.fillStyle = capeColor;
+          ctx.translate(0, -bob);
+
+          // ---- Capa (detrás) ----
+          if (cfg.cape) {
+            const flap = jumping ? 10 : Math.sin(walk * 0.7) * 4;
+            ctx.fillStyle = cfg.cape;
+            ctx.strokeStyle = shade(cfg.cape, -40);
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.moveTo(5, 10);
-            ctx.lineTo(-5, 10);
-            ctx.lineTo(-8, 25);
-            ctx.lineTo(8, 25);
+            ctx.moveTo(-2, 8);
+            ctx.quadraticCurveTo(-16 - flap, 20, -12 - flap, 34);
+            ctx.quadraticCurveTo(-6, 30, -1, 32);
+            ctx.lineTo(2, 10);
             ctx.closePath();
-            ctx.fill();
+            ctx.fill(); ctx.stroke();
           }
 
-          // Piernas
-          ctx.fillStyle = '#4169E1';
-          ctx.fillRect(-4, 20, 3, 12);
-          ctx.fillRect(1, 20, 3, 12);
+          // ---- Pierna trasera ----
+          ctx.strokeStyle = OUT; ctx.lineWidth = 1.6;
+          ctx.fillStyle = shade(cfg.pants, -25);
+          rr(ctx, -7 + legSwing * -0.6, 20, 6, 12, 3); ctx.fill(); ctx.stroke();
+          // zapato trasero
+          ctx.fillStyle = '#6b3410';
+          rr(ctx, -9 + legSwing * -0.6, 30, 9, 5, { tl: 3, tr: 3, br: 3, bl: 3 }); ctx.fill(); ctx.stroke();
 
-          // Zapatos
-          ctx.fillStyle = '#8B4513';
-          ctx.fillRect(-5, 32, 4, 3);
-          ctx.fillRect(1, 32, 4, 3);
+          // ---- Pierna delantera ----
+          ctx.fillStyle = cfg.pants;
+          rr(ctx, 1 + legSwing * 0.6, 20, 6, 12, 3); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#8b4513';
+          rr(ctx, 0 + legSwing * 0.6, 30, 10, 5, { tl: 3, tr: 4, br: 4, bl: 3 }); ctx.fill(); ctx.stroke();
 
-          // Cuerpo
-          ctx.fillStyle = bodyColor;
-          ctx.fillRect(-6, 8, 12, 14);
+          // ---- Brazo trasero ----
+          ctx.fillStyle = shade(cfg.body, -30);
+          ctx.save();
+          ctx.translate(-8, 11);
+          ctx.rotate((-armSwing) * 0.06);
+          rr(ctx, -2.5, 0, 5, 12, 2.5); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = cfg.skin;
+          ctx.beginPath(); ctx.arc(0, 12, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.restore();
 
-          // Círculo en pecho
-          if (showCircle) {
-            ctx.fillStyle = circleColor;
+          // ---- Cuerpo ----
+          const grad = ctx.createLinearGradient(0, 6, 0, 24);
+          grad.addColorStop(0, cfg.body);
+          grad.addColorStop(1, cfg.bodyD);
+          ctx.fillStyle = grad;
+          rr(ctx, -9, 6, 18, 17, { tl: 8, tr: 8, br: 6, bl: 6 }); ctx.fill(); ctx.stroke();
+
+          // Emblema en el pecho
+          if (cfg.chest) {
+            ctx.fillStyle = cfg.chest;
+            if (cfg.mask === 'spider') { // araña simple
+              ctx.beginPath(); ctx.ellipse(0, 14, 2, 3.2, 0, 0, Math.PI * 2); ctx.fill();
+              ctx.strokeStyle = cfg.chest; ctx.lineWidth = 1;
+              for (let i = 0; i < 4; i++) {
+                const a = -0.6 + i * 0.4;
+                ctx.beginPath(); ctx.moveTo(0, 13); ctx.lineTo(Math.cos(a) * 6, 13 + Math.sin(a) * 5); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, 15); ctx.lineTo(-Math.cos(a) * 6, 15 + Math.sin(a) * 5); ctx.stroke();
+              }
+              ctx.strokeStyle = OUT;
+            } else if (costume === 'ironman') { // reactor arc
+              ctx.beginPath(); ctx.arc(0, 13, 3.2, 0, Math.PI * 2); ctx.fill();
+              ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.arc(0, 13, 4.5, 0, Math.PI * 2); ctx.stroke();
+              ctx.strokeStyle = OUT; ctx.lineWidth = 1.6;
+            } else { // rombo/escudo
+              ctx.beginPath();
+              ctx.moveTo(0, 9); ctx.lineTo(4.5, 13); ctx.lineTo(0, 17.5); ctx.lineTo(-4.5, 13);
+              ctx.closePath(); ctx.fill();
+              ctx.stroke();
+            }
+          } else if (costume === 'mario') {
+            // Peto vaquero con botones
+            ctx.fillStyle = '#1d4ed8';
+            rr(ctx, -6, 12, 12, 11, { tl: 3, tr: 3, br: 5, bl: 5 }); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath(); ctx.arc(-3.5, 14, 1.2, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(3.5, 14, 1.2, 0, Math.PI * 2); ctx.fill();
+          } else if (!C) {
+            // Capitulín: banda dorada estilo capitán
+            ctx.fillStyle = '#fbbf24';
+            ctx.save();
             ctx.beginPath();
-            ctx.arc(0, 15, 3, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.moveTo(-9, 9); ctx.lineTo(-3, 23); ctx.lineTo(1, 23); ctx.lineTo(-5, 9);
+            ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.restore();
           }
 
-          // Brazos
-          ctx.fillStyle = bodyColor;
-          ctx.fillRect(-8, 10, 2, 10);
-          ctx.fillRect(6, 10, 2, 10);
+          // ---- Brazo delantero ----
+          ctx.fillStyle = cfg.body;
+          ctx.save();
+          ctx.translate(8, 11);
+          ctx.rotate(armSwing * 0.06 + (cfg.hammer ? -0.5 : 0));
+          rr(ctx, -2.5, 0, 5, 12, 2.5); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = cfg.skin;
+          ctx.beginPath(); ctx.arc(0, 12, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          // Martillo de Thor
+          if (cfg.hammer) {
+            ctx.fillStyle = '#78350f';
+            rr(ctx, -1, 12, 2.5, 10, 1); ctx.fill(); ctx.stroke();
+            const hg = ctx.createLinearGradient(-6, 20, 6, 28);
+            hg.addColorStop(0, '#e2e8f0'); hg.addColorStop(1, '#94a3b8');
+            ctx.fillStyle = hg;
+            rr(ctx, -6, 20, 13, 8, 2); ctx.fill(); ctx.stroke();
+          }
+          ctx.restore();
 
-          // Manos
-          ctx.fillStyle = headColor;
+          // ---- Cabeza (grande, estilo chibi) ----
+          ctx.fillStyle = cfg.skin;
           ctx.beginPath();
-          ctx.arc(-7, 20, 2, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(7, 20, 2, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.arc(0, -4, 11, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
 
-          // Martillo
-          if (showHammer) {
-            ctx.fillStyle = '#808080';
-            ctx.fillRect(8, 18, 2, 8);
-            ctx.fillStyle = '#C0C0C0';
-            ctx.fillRect(6, 16, 6, 4);
+          // Orejas
+          if (cfg.mask !== 'spider' && cfg.mask !== 'iron') {
+            ctx.fillStyle = cfg.skin;
+            ctx.beginPath(); ctx.arc(-10.5, -3, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
           }
 
-          // Cabeza
-          ctx.fillStyle = headColor;
-          ctx.beginPath();
-          ctx.arc(0, 4, 6, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Pelo moreno
-          if (costume !== 'spiderman' && costume !== 'hulk' && costume !== 'ironman') {
-            ctx.fillStyle = '#3D2817';
+          // Pelo / máscara / casco
+          if (cfg.mask === 'iron') {
+            ctx.fillStyle = cfg.helmet;
+            ctx.beginPath(); ctx.arc(0, -4, 11, Math.PI * 0.95, Math.PI * 2.05); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = cfg.helmet;
+            rr(ctx, -11, -6, 22, 4, 2); ctx.fill();
+          } else if (cfg.mask === 'bat') {
+            ctx.fillStyle = '#1f2937';
+            ctx.beginPath(); ctx.arc(0, -4, 11, Math.PI * 0.85, Math.PI * 2.15); ctx.fill(); ctx.stroke();
+            // orejas de murciélago
+            ctx.beginPath(); ctx.moveTo(-8, -11); ctx.lineTo(-6, -19); ctx.lineTo(-3, -12); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(8, -11); ctx.lineTo(6, -19); ctx.lineTo(3, -12); ctx.closePath(); ctx.fill(); ctx.stroke();
+          } else if (cfg.hair) {
+            ctx.fillStyle = cfg.hair;
             ctx.beginPath();
-            ctx.ellipse(0, -1, 7, 4, 0, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.arc(0, -6, 11.2, Math.PI * 0.95, Math.PI * 2.05);
+            ctx.quadraticCurveTo(11, -1, 8, -2);
+            ctx.quadraticCurveTo(5, -8, 0, -7);
+            ctx.quadraticCurveTo(-5, -8, -8, -2);
+            ctx.quadraticCurveTo(-11, -1, -11.1, -4);
+            ctx.closePath();
+            ctx.fill(); ctx.stroke();
+            // mechón
             ctx.beginPath();
-            ctx.arc(-4, 0, 3, 0, Math.PI);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(4, 0, 3, 0, Math.PI);
-            ctx.fill();
+            ctx.moveTo(2, -14.5);
+            ctx.quadraticCurveTo(6, -18, 8, -14);
+            ctx.quadraticCurveTo(5, -14.5, 4, -12.5);
+            ctx.closePath(); ctx.fill();
           }
 
-          // Ojos
-          if (costume === 'ironman') {
-            ctx.fillStyle = '#00FFFF';
-            ctx.fillRect(-3, 2, 2, 2);
-            ctx.fillRect(1, 2, 2, 2);
+          // Gorra de Mario
+          if (cfg.cap) {
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath(); ctx.arc(0, -8, 10.5, Math.PI, Math.PI * 2); ctx.fill(); ctx.stroke();
+            rr(ctx, 2, -10, 12, 4, { tl: 1, tr: 4, br: 4, bl: 1 }); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(0, -11, 3.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#dc2626';
+            ctx.font = 'bold 5px Fredoka, Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('M', 0, -9.2);
+          }
+
+          // ---- Ojos grandes cartoon ----
+          const eyeY = -4;
+          if (cfg.mask === 'spider') {
+            ctx.fillStyle = '#fff';
+            ctx.strokeStyle = '#111827'; ctx.lineWidth = 1.4;
+            ctx.beginPath(); ctx.ellipse(-4, eyeY, 3.4, 4.4, -0.25, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(4.5, eyeY, 3.4, 4.4, 0.25, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.strokeStyle = OUT;
+          } else if (cfg.mask === 'iron') {
+            ctx.fillStyle = '#7dd3fc';
+            rr(ctx, -7, eyeY - 1.5, 5, 3, 1.5); ctx.fill();
+            rr(ctx, 2.5, eyeY - 1.5, 5, 3, 1.5); ctx.fill();
           } else {
-            ctx.fillStyle = '#000000';
-            ctx.beginPath();
-            ctx.arc(-2, 3, 1, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(2, 3, 1, 0, Math.PI * 2);
-            ctx.fill();
+            // esclerótica
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.ellipse(-3.8, eyeY, 3, 3.8, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(4.2, eyeY, 3, 3.8, 0, 0, Math.PI * 2); ctx.fill();
+            // pupilas (miran hacia delante)
+            ctx.fillStyle = '#2d1b0e';
+            ctx.beginPath(); ctx.arc(-2.9, eyeY + 0.5, 1.9, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(5.1, eyeY + 0.5, 1.9, 0, Math.PI * 2); ctx.fill();
+            // brillo
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(-2.3, eyeY - 0.3, 0.7, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(5.7, eyeY - 0.3, 0.7, 0, Math.PI * 2); ctx.fill();
+            // cejas
+            ctx.strokeStyle = cfg.hair || '#374151';
+            ctx.lineWidth = 1.4;
+            ctx.beginPath(); ctx.arc(-3.8, eyeY - 3.6, 2.6, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+            ctx.beginPath(); ctx.arc(4.2, eyeY - 3.6, 2.6, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+            ctx.strokeStyle = OUT;
           }
 
-          // Sonrisa
-          ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.arc(0, 5, 3, 0, Math.PI);
-          ctx.stroke();
+          // Mofletes
+          if (cfg.mask !== 'spider' && cfg.mask !== 'iron' && costume !== 'hulk') {
+            ctx.fillStyle = 'rgba(244,114,182,0.45)';
+            ctx.beginPath(); ctx.ellipse(-7, 0.5, 2, 1.3, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(7.5, 0.5, 2, 1.3, 0, 0, Math.PI * 2); ctx.fill();
+          }
 
-          // Gorra Mario
-          if (costume === 'mario') {
-            ctx.fillStyle = '#FF0000';
-            ctx.fillRect(-6, -2, 12, 3);
-            ctx.fillStyle = '#FFFFFF';
+          // Nariz + sonrisa
+          if (cfg.mask !== 'spider' && cfg.mask !== 'iron') {
+            ctx.fillStyle = shade(cfg.skin, -35);
+            ctx.beginPath(); ctx.ellipse(0.5, -0.5, 1.4, 1, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#7c2d12';
+            ctx.lineWidth = 1.6;
             ctx.beginPath();
-            ctx.arc(0, -1, 2, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.arc(0.5, 1.2, 3.4, Math.PI * 0.15, Math.PI * 0.85);
+            ctx.stroke();
+            ctx.strokeStyle = OUT;
+          }
+
+          // Bigote Mario
+          if (cfg.cap) {
+            ctx.fillStyle = '#3d2817';
+            ctx.beginPath();
+            ctx.ellipse(0.5, 2.2, 5, 1.8, 0, 0, Math.PI); ctx.fill();
           }
 
           ctx.restore();
         };
 
+        // ============ Escenario: selva ============
+        const drawJungleBackground = (ctx, W, H, theme, t) => {
+          // Cielo
+          const sky = ctx.createLinearGradient(0, 0, 0, H);
+          sky.addColorStop(0, theme.skyTop);
+          sky.addColorStop(0.65, theme.skyBottom);
+          sky.addColorStop(1, theme.ground);
+          ctx.fillStyle = sky;
+          ctx.fillRect(0, 0, W, H);
+
+          // Sol con halo
+          ctx.save();
+          const sunX = 700, sunY = 60;
+          const halo = ctx.createRadialGradient(sunX, sunY, 5, sunX, sunY, 70);
+          halo.addColorStop(0, 'rgba(253,224,71,0.9)');
+          halo.addColorStop(0.4, 'rgba(253,224,71,0.35)');
+          halo.addColorStop(1, 'rgba(253,224,71,0)');
+          ctx.fillStyle = halo;
+          ctx.fillRect(sunX - 80, sunY - 80, 160, 160);
+          ctx.fillStyle = '#fde047';
+          ctx.beginPath(); ctx.arc(sunX, sunY, 26, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#fef9c3';
+          ctx.beginPath(); ctx.arc(sunX - 7, sunY - 7, 10, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+
+          // Montañas / colinas lejanas
+          ctx.fillStyle = theme.hillsFar;
+          ctx.beginPath();
+          ctx.moveTo(0, 340);
+          ctx.quadraticCurveTo(120, 220, 260, 330);
+          ctx.quadraticCurveTo(400, 240, 560, 335);
+          ctx.quadraticCurveTo(690, 250, 800, 330);
+          ctx.lineTo(800, H); ctx.lineTo(0, H);
+          ctx.closePath(); ctx.fill();
+
+          ctx.fillStyle = theme.hillsNear;
+          ctx.beginPath();
+          ctx.moveTo(0, 400);
+          ctx.quadraticCurveTo(160, 310, 330, 395);
+          ctx.quadraticCurveTo(520, 320, 800, 400);
+          ctx.lineTo(800, H); ctx.lineTo(0, H);
+          ctx.closePath(); ctx.fill();
+
+          // Nubes suaves con movimiento lento
+          const drift = (t * 0.12) % (W + 200);
+          drawCloud(ctx, ((100 + drift) % (W + 200)) - 100, 55, 1);
+          drawCloud(ctx, ((420 + drift * 0.7) % (W + 200)) - 100, 95, 0.8);
+          drawCloud(ctx, ((650 + drift * 0.5) % (W + 200)) - 100, 40, 1.1);
+
+          // Lianas colgando desde arriba
+          ctx.strokeStyle = 'rgba(22,101,52,0.55)';
+          ctx.lineWidth = 4;
+          [80, 250, 560, 730].forEach((vx, i) => {
+            const sway = Math.sin(t * 0.02 + i) * 6;
+            ctx.beginPath();
+            ctx.moveTo(vx, 0);
+            ctx.quadraticCurveTo(vx + sway, 40, vx + sway * 1.5, 85 + i * 8);
+            ctx.stroke();
+            // hoja al final
+            ctx.fillStyle = 'rgba(34,139,58,0.7)';
+            ctx.beginPath();
+            ctx.ellipse(vx + sway * 1.5, 88 + i * 8, 7, 4, 0.6, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        };
+
+        const drawCloud = (ctx, x, y, s = 1) => {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(s, s);
+          ctx.fillStyle = 'rgba(255,255,255,0.55)';
+          ctx.beginPath(); ctx.arc(2, 6, 16, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(34, 6, 16, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.92)';
+          ctx.beginPath(); ctx.arc(0, 2, 14, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(16, -6, 18, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(32, 2, 14, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        };
+
+        const drawTree = (ctx, x, y, s = 1) => {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(s, s);
+          // tronco con textura
+          const tg = ctx.createLinearGradient(-6, 0, 6, 0);
+          tg.addColorStop(0, '#92400e'); tg.addColorStop(0.5, '#b45309'); tg.addColorStop(1, '#78350f');
+          ctx.fillStyle = tg;
+          ctx.beginPath();
+          ctx.moveTo(-6, 0);
+          ctx.quadraticCurveTo(-3, -22, -4, -40);
+          ctx.lineTo(4, -40);
+          ctx.quadraticCurveTo(3, -22, 6, 0);
+          ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = 'rgba(69,26,3,0.4)'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(-1, -5); ctx.quadraticCurveTo(0, -18, -1, -30); ctx.stroke();
+          // copa en capas
+          const leaves = [
+            { x: 0, y: -55, r: 24, c: '#15803d' },
+            { x: -18, y: -46, r: 17, c: '#166534' },
+            { x: 18, y: -46, r: 17, c: '#166534' },
+            { x: -10, y: -62, r: 15, c: '#22c55e' },
+            { x: 12, y: -62, r: 14, c: '#22c55e' },
+            { x: 0, y: -70, r: 13, c: '#4ade80' }
+          ];
+          leaves.forEach(l => {
+            ctx.fillStyle = l.c;
+            ctx.beginPath(); ctx.arc(l.x, l.y, l.r, 0, Math.PI * 2); ctx.fill();
+          });
+          // brillo
+          ctx.fillStyle = 'rgba(255,255,255,0.18)';
+          ctx.beginPath(); ctx.arc(-6, -68, 7, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        };
+
+        const drawBush = (ctx, x, y) => {
+          ctx.fillStyle = '#16a34a';
+          ctx.beginPath(); ctx.arc(x, y, 12, Math.PI, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#22c55e';
+          ctx.beginPath(); ctx.arc(x - 12, y, 9, Math.PI, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(x + 12, y, 9, Math.PI, Math.PI * 2); ctx.fill();
+        };
+
+        const drawFlower = (ctx, x, y, color) => {
+          ctx.strokeStyle = '#15803d'; ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - 8); ctx.stroke();
+          ctx.fillStyle = color;
+          for (let i = 0; i < 5; i++) {
+            const a = (i / 5) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.ellipse(x + Math.cos(a) * 3, y - 8 + Math.sin(a) * 3, 2.4, 2.4, 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.fillStyle = '#fde047';
+          ctx.beginPath(); ctx.arc(x, y - 8, 2, 0, Math.PI * 2); ctx.fill();
+        };
+
+        const drawPlatform = (ctx, p, theme, isGround) => {
+          const grassH = 12;
+          // tierra
+          const dg = ctx.createLinearGradient(0, p.y, 0, p.y + p.height);
+          dg.addColorStop(0, theme.dirt);
+          dg.addColorStop(1, shade(theme.dirt, -30));
+          ctx.fillStyle = dg;
+          rr(ctx, p.x, p.y + 4, p.width, p.height - 4, isGround ? 0 : { tl: 0, tr: 0, br: 10, bl: 10 });
+          ctx.fill();
+          // motas en la tierra
+          ctx.fillStyle = 'rgba(0,0,0,0.12)';
+          for (let i = 0; i < Math.floor(p.width / 34); i++) {
+            const px = p.x + 14 + i * 34 + ((p.y * 7 + i * 13) % 9);
+            const py = p.y + 12 + ((p.x + i * 29) % Math.max(4, p.height - 16));
+            ctx.beginPath(); ctx.ellipse(px, py, 3, 2, 0.3, 0, Math.PI * 2); ctx.fill();
+          }
+          // capa de hierba
+          const gg = ctx.createLinearGradient(0, p.y, 0, p.y + grassH);
+          gg.addColorStop(0, theme.grassLight);
+          gg.addColorStop(1, theme.grass);
+          ctx.fillStyle = gg;
+          rr(ctx, p.x, p.y, p.width, grassH, isGround ? { tl: 4, tr: 4, br: 0, bl: 0 } : { tl: 8, tr: 8, br: 0, bl: 0 });
+          ctx.fill();
+          // borde de hierba irregular
+          ctx.fillStyle = theme.grass;
+          for (let gx = p.x + 6; gx < p.x + p.width - 4; gx += 12) {
+            ctx.beginPath();
+            ctx.arc(gx, p.y + grassH, 4, 0, Math.PI);
+            ctx.fill();
+          }
+          // brillo superior
+          ctx.fillStyle = 'rgba(255,255,255,0.25)';
+          rr(ctx, p.x + 4, p.y + 2, p.width - 8, 3, 2);
+          ctx.fill();
+        };
+
+        // Jaula dorada con animal dentro
+        const drawCage = (ctx, cage, t) => {
+          const bob = Math.sin(t * 0.05 + cage.id) * 3;
+          const x = cage.x + 20, y = cage.y + 20 + bob;
+          ctx.save();
+          ctx.translate(x, y);
+
+          // sombra
+          ctx.fillStyle = 'rgba(0,0,0,0.15)';
+          ctx.beginPath(); ctx.ellipse(0, 26 - bob, 18, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+          // brillo de "¡rescátame!"
+          const glow = ctx.createRadialGradient(0, 0, 5, 0, 0, 34);
+          glow.addColorStop(0, 'rgba(253,224,71,0.35)');
+          glow.addColorStop(1, 'rgba(253,224,71,0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath(); ctx.arc(0, 0, 34, 0, Math.PI * 2); ctx.fill();
+
+          // animal dentro
+          ctx.font = '26px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(cage.emoji, 0, 5);
+
+          // cúpula + barrotes
+          ctx.strokeStyle = '#b45309';
+          ctx.lineWidth = 2.5;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(-16, 22);
+          ctx.lineTo(-16, -6);
+          ctx.quadraticCurveTo(-16, -22, 0, -22);
+          ctx.quadraticCurveTo(16, -22, 16, -6);
+          ctx.lineTo(16, 22);
+          ctx.stroke();
+          ctx.strokeStyle = '#d97706';
+          ctx.lineWidth = 2;
+          [-9, -3, 3, 9].forEach(bx => {
+            ctx.beginPath();
+            ctx.moveTo(bx, 22);
+            ctx.lineTo(bx, -14 - (9 - Math.abs(bx)) * 0.6);
+            ctx.stroke();
+          });
+          // base y techo
+          ctx.fillStyle = '#b45309';
+          rr(ctx, -19, 20, 38, 6, 3); ctx.fill();
+          ctx.fillStyle = '#d97706';
+          rr(ctx, -19, 19, 38, 3, 2); ctx.fill();
+          // anilla superior
+          ctx.strokeStyle = '#b45309'; ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.arc(0, -26, 4, 0, Math.PI * 2); ctx.stroke();
+          // candado
+          ctx.fillStyle = '#78350f';
+          rr(ctx, 11, 2, 8, 8, 2); ctx.fill();
+          ctx.strokeStyle = '#78350f'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(15, 2, 3, Math.PI, Math.PI * 2); ctx.stroke();
+          ctx.fillStyle = '#fbbf24';
+          ctx.beginPath(); ctx.arc(15, 6, 1.3, 0, Math.PI * 2); ctx.fill();
+
+          // destello
+          const sp = (t * 0.08 + cage.id * 2) % 6;
+          if (sp < 1) {
+            ctx.fillStyle = 'rgba(255,255,255,' + (1 - sp) + ')';
+            const sx = -12 + cage.id * 5, sy = -18;
+            ctx.beginPath();
+            ctx.moveTo(sx, sy - 4); ctx.lineTo(sx + 1.4, sy - 1.4); ctx.lineTo(sx + 4, sy);
+            ctx.lineTo(sx + 1.4, sy + 1.4); ctx.lineTo(sx, sy + 4); ctx.lineTo(sx - 1.4, sy + 1.4);
+            ctx.lineTo(sx - 4, sy); ctx.lineTo(sx - 1.4, sy - 1.4);
+            ctx.closePath(); ctx.fill();
+          }
+
+          ctx.restore();
+        };
+
+        // ============ Niveles (temas de selva) ============
         const LEVELS = {
           level1: {
             platforms: [
@@ -318,8 +738,8 @@
               { x: 150, y: 200, width: 100, height: 20 },
               { x: 500, y: 150, width: 110, height: 20 }
             ],
-            background: 'linear-gradient(to bottom, #87CEEB, #90EE90)',
-            platformColor: '#8B4513'
+            theme: { skyTop: '#7dd3fc', skyBottom: '#bae6fd', ground: '#bbf7d0', hillsFar: 'rgba(74,222,128,0.35)', hillsNear: 'rgba(34,197,94,0.4)', grass: '#22c55e', grassLight: '#4ade80', dirt: '#a16207' },
+            uiBg: 'linear-gradient(to bottom, #bae6fd, #dcfce7)'
           },
           level2: {
             platforms: [
@@ -331,8 +751,8 @@
               { x: 300, y: 200, width: 150, height: 20 },
               { x: 100, y: 150, width: 100, height: 20 }
             ],
-            background: 'linear-gradient(to bottom, #FFB6C1, #FFE4E1)',
-            platformColor: '#CD853F'
+            theme: { skyTop: '#fda4af', skyBottom: '#fecdd3', ground: '#fef3c7', hillsFar: 'rgba(217,119,6,0.25)', hillsNear: 'rgba(202,138,4,0.3)', grass: '#84cc16', grassLight: '#a3e635', dirt: '#b45309' },
+            uiBg: 'linear-gradient(to bottom, #fecdd3, #fef3c7)'
           },
           level3: {
             platforms: [
@@ -344,8 +764,8 @@
               { x: 350, y: 170, width: 100, height: 20 },
               { x: 50, y: 120, width: 100, height: 20 }
             ],
-            background: 'linear-gradient(to bottom, #E0BBE4, #FEC8D8)',
-            platformColor: '#A0522D'
+            theme: { skyTop: '#c4b5fd', skyBottom: '#e9d5ff', ground: '#fbcfe8', hillsFar: 'rgba(147,51,234,0.2)', hillsNear: 'rgba(126,34,206,0.25)', grass: '#34d399', grassLight: '#6ee7b7', dirt: '#92400e' },
+            uiBg: 'linear-gradient(to bottom, #e9d5ff, #fbcfe8)'
           },
           level4: {
             platforms: [
@@ -357,8 +777,8 @@
               { x: 250, y: 180, width: 130, height: 20 },
               { x: 500, y: 120, width: 100, height: 20 }
             ],
-            background: 'linear-gradient(to bottom, #B4F8C8, #FBE7C6)',
-            platformColor: '#8B6914'
+            theme: { skyTop: '#5eead4', skyBottom: '#a7f3d0', ground: '#fde68a', hillsFar: 'rgba(13,148,136,0.25)', hillsNear: 'rgba(15,118,110,0.3)', grass: '#16a34a', grassLight: '#4ade80', dirt: '#854d0e' },
+            uiBg: 'linear-gradient(to bottom, #a7f3d0, #fde68a)'
           },
           level5: {
             platforms: [
@@ -370,10 +790,48 @@
               { x: 450, y: 180, width: 100, height: 20 },
               { x: 650, y: 150, width: 100, height: 20 }
             ],
-            background: 'linear-gradient(to bottom, #A8E6CF, #FFD3B6)',
-            platformColor: '#704214'
+            theme: { skyTop: '#fdba74', skyBottom: '#fed7aa', ground: '#d9f99d', hillsFar: 'rgba(234,88,12,0.22)', hillsNear: 'rgba(194,65,12,0.28)', grass: '#65a30d', grassLight: '#84cc16', dirt: '#78350f' },
+            uiBg: 'linear-gradient(to bottom, #fed7aa, #d9f99d)'
           }
         };
+
+        // ============ SVGs de iconos de control ============
+        const ArrowLeftIcon = () => (
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" stroke="#15803d" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+        const ArrowRightIcon = () => (
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 5l7 7-7 7" stroke="#15803d" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+        const JumpIcon = () => (
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 19V6M6 12l6-6 6 6" stroke="#c2410c" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+
+        // Etiqueta bilingüe reutilizable
+        const BilingualName = ({ animal, size = 'big' }) => (
+          <div style={{ lineHeight: 1.15 }}>
+            <div style={{
+              fontSize: size === 'big' ? 'clamp(1.6rem, 7vw, 2.4rem)' : 'clamp(1.1rem, 4.5vw, 1.5rem)',
+              fontWeight: 700,
+              color: 'var(--color-text)'
+            }}>
+              {animal.es}
+            </div>
+            <div style={{
+              fontSize: size === 'big' ? 'clamp(1.1rem, 5vw, 1.6rem)' : 'clamp(0.9rem, 3.5vw, 1.1rem)',
+              fontWeight: 600,
+              color: 'var(--color-en)',
+              fontStyle: 'italic'
+            }}>
+              {animal.en}
+            </div>
+          </div>
+        );
 
         const CapitulinGame = () => {
           const [screen, setScreen] = useState('start');
@@ -396,77 +854,56 @@
           const touchControls = useRef({ left: false, right: false, jump: false });
           const gameLoopRef = useRef(null);
           const canvasRef = useRef(null);
+          const facingRef = useRef(1);
+          const walkRef = useRef(0);
+          const timeRef = useRef(0);
 
+          // Animales bilingües ES / EN
           const allAnimals = [
-            { name: '🐕 Perro', domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🐈 Gato', domestic: 'domestico', habitat: 'terrestre', diet: 'carnivoro' },
-            { name: '🐄 Vaca', domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🐴 Caballo', domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🦁 León', domestic: 'salvaje', habitat: 'terrestre', diet: 'carnivoro' },
-            { name: '🐯 Tigre', domestic: 'salvaje', habitat: 'terrestre', diet: 'carnivoro' },
-            { name: '🐘 Elefante', domestic: 'salvaje', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🦒 Jirafa', domestic: 'salvaje', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🐻 Oso', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🐬 Delfín', domestic: 'salvaje', habitat: 'acuatico', diet: 'carnivoro' },
-            { name: '🦈 Tiburón', domestic: 'salvaje', habitat: 'acuatico', diet: 'carnivoro' },
-            { name: '🐠 Pez', domestic: 'salvaje', habitat: 'acuatico', diet: 'omnivoro' },
-            { name: '🦅 Águila', domestic: 'salvaje', habitat: 'aereo', diet: 'carnivoro' },
-            { name: '🦜 Loro', domestic: 'salvaje', habitat: 'aereo', diet: 'omnivoro' },
-            { name: '🦉 Búho', domestic: 'salvaje', habitat: 'aereo', diet: 'carnivoro' },
-            { name: '🐔 Gallina', domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🦆 Pato', domestic: 'domestico', habitat: 'acuatico', diet: 'omnivoro' },
-            { name: '🐵 Mono', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🐷 Cerdo', domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🐰 Conejo', domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🐺 Lobo', domestic: 'salvaje', habitat: 'terrestre', diet: 'carnivoro' },
-            { name: '🦊 Zorro', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🦌 Ciervo', domestic: 'salvaje', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🐸 Rana', domestic: 'salvaje', habitat: 'acuatico', diet: 'carnivoro' },
-            { name: '🐢 Tortuga', domestic: 'salvaje', habitat: 'acuatico', diet: 'omnivoro' },
-            { name: '🐊 Cocodrilo', domestic: 'salvaje', habitat: 'acuatico', diet: 'carnivoro' },
-            { name: '🦎 Lagarto', domestic: 'salvaje', habitat: 'terrestre', diet: 'carnivoro' },
-            { name: '🦘 Canguro', domestic: 'salvaje', habitat: 'terrestre', diet: 'herbivoro' },
-            { name: '🦡 Tejón', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' },
-            { name: '🐀 Ratón', domestic: 'salvaje', habitat: 'terrestre', diet: 'omnivoro' }
+            { emoji: '🐕', es: 'Perro',     en: 'Dog',       domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🐈', es: 'Gato',      en: 'Cat',       domestic: 'domestico', habitat: 'terrestre', diet: 'carnivoro' },
+            { emoji: '🐄', es: 'Vaca',      en: 'Cow',       domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🐴', es: 'Caballo',   en: 'Horse',     domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🦁', es: 'León',      en: 'Lion',      domestic: 'salvaje',   habitat: 'terrestre', diet: 'carnivoro' },
+            { emoji: '🐯', es: 'Tigre',     en: 'Tiger',     domestic: 'salvaje',   habitat: 'terrestre', diet: 'carnivoro' },
+            { emoji: '🐘', es: 'Elefante',  en: 'Elephant',  domestic: 'salvaje',   habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🦒', es: 'Jirafa',    en: 'Giraffe',   domestic: 'salvaje',   habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🐻', es: 'Oso',       en: 'Bear',      domestic: 'salvaje',   habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🐬', es: 'Delfín',    en: 'Dolphin',   domestic: 'salvaje',   habitat: 'acuatico',  diet: 'carnivoro' },
+            { emoji: '🦈', es: 'Tiburón',   en: 'Shark',     domestic: 'salvaje',   habitat: 'acuatico',  diet: 'carnivoro' },
+            { emoji: '🐠', es: 'Pez',       en: 'Fish',      domestic: 'salvaje',   habitat: 'acuatico',  diet: 'omnivoro' },
+            { emoji: '🦅', es: 'Águila',    en: 'Eagle',     domestic: 'salvaje',   habitat: 'aereo',     diet: 'carnivoro' },
+            { emoji: '🦜', es: 'Loro',      en: 'Parrot',    domestic: 'salvaje',   habitat: 'aereo',     diet: 'omnivoro' },
+            { emoji: '🦉', es: 'Búho',      en: 'Owl',       domestic: 'salvaje',   habitat: 'aereo',     diet: 'carnivoro' },
+            { emoji: '🐔', es: 'Gallina',   en: 'Hen',       domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🦆', es: 'Pato',      en: 'Duck',      domestic: 'domestico', habitat: 'acuatico',  diet: 'omnivoro' },
+            { emoji: '🐵', es: 'Mono',      en: 'Monkey',    domestic: 'salvaje',   habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🐷', es: 'Cerdo',     en: 'Pig',       domestic: 'domestico', habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🐰', es: 'Conejo',    en: 'Rabbit',    domestic: 'domestico', habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🐺', es: 'Lobo',      en: 'Wolf',      domestic: 'salvaje',   habitat: 'terrestre', diet: 'carnivoro' },
+            { emoji: '🦊', es: 'Zorro',     en: 'Fox',       domestic: 'salvaje',   habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🦌', es: 'Ciervo',    en: 'Deer',      domestic: 'salvaje',   habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🐸', es: 'Rana',      en: 'Frog',      domestic: 'salvaje',   habitat: 'acuatico',  diet: 'carnivoro' },
+            { emoji: '🐢', es: 'Tortuga',   en: 'Turtle',    domestic: 'salvaje',   habitat: 'acuatico',  diet: 'omnivoro' },
+            { emoji: '🐊', es: 'Cocodrilo', en: 'Crocodile', domestic: 'salvaje',   habitat: 'acuatico',  diet: 'carnivoro' },
+            { emoji: '🦎', es: 'Lagarto',   en: 'Lizard',    domestic: 'salvaje',   habitat: 'terrestre', diet: 'carnivoro' },
+            { emoji: '🦘', es: 'Canguro',   en: 'Kangaroo',  domestic: 'salvaje',   habitat: 'terrestre', diet: 'herbivoro' },
+            { emoji: '🦡', es: 'Tejón',     en: 'Badger',    domestic: 'salvaje',   habitat: 'terrestre', diet: 'omnivoro' },
+            { emoji: '🐀', es: 'Ratón',     en: 'Mouse',     domestic: 'salvaje',   habitat: 'terrestre', diet: 'omnivoro' }
           ];
 
           const costumes = [
-            { id: 'default', name: 'Capitulín', price: 0 },
-            { id: 'superman', name: 'Superman', price: 5 },
-            { id: 'spiderman', name: 'Spiderman', price: 5 },
-            { id: 'hulk', name: 'Hulk', price: 5 },
-            { id: 'thor', name: 'Thor', price: 5 },
-            { id: 'mario', name: 'Mario Bros', price: 5 },
-            { id: 'batman', name: 'Batman', price: 5 },
-            { id: 'ironman', name: 'Iron Man', price: 5 }
+            { id: 'default',   name: 'Capitulín',  price: 0 },
+            { id: 'superman',  name: 'Superman',   price: 5 },
+            { id: 'spiderman', name: 'Spiderman',  price: 5 },
+            { id: 'hulk',      name: 'Hulk',       price: 5 },
+            { id: 'thor',      name: 'Thor',       price: 5 },
+            { id: 'mario',     name: 'Mario Bros', price: 5 },
+            { id: 'batman',    name: 'Batman',     price: 5 },
+            { id: 'ironman',   name: 'Iron Man',   price: 5 }
           ];
 
-          const getCurrentLevelData = () => {
-            const levelKey = `level${currentLevel}`;
-            return LEVELS[levelKey] || LEVELS.level1;
-          };
-
-          const drawTree = (ctx, x, y) => {
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(x, y, 8, 20);
-            ctx.fillStyle = '#228B22';
-            ctx.beginPath();
-            ctx.arc(x + 4, y, 12, 0, Math.PI * 2);
-            ctx.fill();
-          };
-
-          const drawCloud = (ctx, x, y) => {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.beginPath();
-            ctx.arc(x, y, 15, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x + 15, y, 20, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(x + 30, y, 15, 0, Math.PI * 2);
-            ctx.fill();
-          };
+          const getCurrentLevelData = () => LEVELS[`level${currentLevel}`] || LEVELS.level1;
 
           useEffect(() => {
             if (screen === 'game' && cagePositions.length === 0) {
@@ -479,12 +916,7 @@
               gameLoopRef.current = setInterval(() => {
                 updateGame();
               }, 1000 / 60);
-
-              return () => {
-                if (gameLoopRef.current) {
-                  clearInterval(gameLoopRef.current);
-                }
-              };
+              return () => { if (gameLoopRef.current) clearInterval(gameLoopRef.current); };
             }
           }, [screen, showQuestion, showLevelComplete, playerPos.x, playerPos.y, velocity.y, isJumping]);
 
@@ -496,14 +928,9 @@
                 setIsJumping(true);
               }
             };
-
-            const handleKeyUp = (e) => {
-              keysPressed.current[e.key] = false;
-            };
-
+            const handleKeyUp = (e) => { keysPressed.current[e.key] = false; };
             window.addEventListener('keydown', handleKeyDown);
             window.addEventListener('keyup', handleKeyUp);
-
             return () => {
               window.removeEventListener('keydown', handleKeyDown);
               window.removeEventListener('keyup', handleKeyUp);
@@ -512,49 +939,50 @@
 
           const generateCages = () => {
             const levelData = getCurrentLevelData();
+            // Barajamos animales para asignar uno visible a cada jaula
+            const shuffled = [...allAnimals].sort(() => Math.random() - 0.5);
             const newCages = levelData.platforms.slice(1).map((platform, idx) => ({
               x: platform.x + platform.width / 2 - 20,
-              y: platform.y - 45,
+              y: platform.y - 55,
               collected: false,
-              id: idx
+              id: idx,
+              emoji: shuffled[idx % shuffled.length].emoji,
+              animal: shuffled[idx % shuffled.length]
             }));
             setCagePositions(newCages);
           };
 
           const getRandomAnimal = () => {
-            const availableAnimals = allAnimals.filter(animal => !usedAnimals.includes(animal.name));
-            
+            const availableAnimals = allAnimals.filter(a => !usedAnimals.includes(a.es));
             if (availableAnimals.length === 0) {
               setUsedAnimals([]);
               return allAnimals[Math.floor(Math.random() * allAnimals.length)];
             }
-            
             const randomAnimal = availableAnimals[Math.floor(Math.random() * availableAnimals.length)];
-            setUsedAnimals([...usedAnimals, randomAnimal.name]);
+            setUsedAnimals([...usedAnimals, randomAnimal.es]);
             return randomAnimal;
           };
 
           const updateGame = () => {
             const levelData = getCurrentLevelData();
-            
+            timeRef.current += 1;
+
             setPlayerPos(prev => {
               let newX = prev.x;
-
+              let moving = false;
               if (keysPressed.current['ArrowLeft'] || touchControls.current.left) {
-                newX -= 5;
+                newX -= 5; facingRef.current = -1; moving = true;
               }
               if (keysPressed.current['ArrowRight'] || touchControls.current.right) {
-                newX += 5;
+                newX += 5; facingRef.current = 1; moving = true;
               }
-
-              newX = Math.max(0, Math.min(770, newX));
-
+              if (moving) walkRef.current += 0.35;
+              newX = Math.max(20, Math.min(780, newX));
               return { ...prev, x: newX };
             });
 
             setVelocity(prev => {
               let newVelY = prev.y + 0.6;
-              
               levelData.platforms.forEach(platform => {
                 if (
                   playerPos.x + 20 > platform.x &&
@@ -568,7 +996,6 @@
                   setIsJumping(false);
                 }
               });
-
               return { ...prev, y: newVelY };
             });
 
@@ -581,7 +1008,7 @@
               if (
                 !cage.collected &&
                 Math.abs(playerPos.x - cage.x - 20) < 40 &&
-                Math.abs(playerPos.y - cage.y - 20) < 40
+                Math.abs(playerPos.y - cage.y - 20) < 45
               ) {
                 collectCage(cage.id);
               }
@@ -595,15 +1022,13 @@
 
           const collectCage = (cageId) => {
             SoundSystem.playCollect();
-
+            const cage = cagePositions.find(c => c.id === cageId);
             setCagePositions(prev =>
-              prev.map(cage =>
-                cage.id === cageId ? { ...cage, collected: true } : cage
-              )
+              prev.map(c => c.id === cageId ? { ...c, collected: true } : c)
             );
-
-            const randomAnimal = getRandomAnimal();
-            setCurrentAnimal(randomAnimal);
+            // El animal de la jaula es el que se pregunta (más coherente visualmente)
+            const animal = cage && cage.animal ? cage.animal : getRandomAnimal();
+            setCurrentAnimal(animal);
             setShowQuestion(true);
           };
 
@@ -621,16 +1046,14 @@
               setCagePositions([]);
               setShowLevelComplete(false);
             } else {
-              alert('¡Felicidades! ¡Has completado todos los niveles!');
               resetGame();
-              setScreen('menu');
+              setScreen('finished');
             }
           };
 
           const handleAnswer = (answer) => {
             let correct = false;
             let correctAnswer = '';
-
             if (gameMode === 'domestic') {
               correct = answer === currentAnimal.domestic;
               correctAnswer = currentAnimal.domestic;
@@ -647,15 +1070,14 @@
               setShowFeedback('correct');
               setCoins(c => c + 1);
               setTotalAnimalsFreed(t => t + 1);
-              
               setTimeout(() => {
                 setShowFeedback(null);
                 setShowQuestion(false);
                 setCurrentAnimal(null);
               }, 1500);
             } else {
+              SoundSystem.playError();
               setShowFeedback({ type: 'incorrect', correct: correctAnswer });
-              
               setTimeout(() => {
                 setShowFeedback(null);
                 setShowQuestion(false);
@@ -676,17 +1098,12 @@
           };
 
           const getOptionLabel = (mode, option) => {
-            if (mode === 'domestic') {
-              return option === 'domestico' ? 'Doméstico' : 'Salvaje';
-            } else if (mode === 'habitat') {
-              if (option === 'terrestre') return 'Terrestre';
-              if (option === 'acuatico') return 'Acuático';
-              if (option === 'aereo') return 'Aéreo';
-            } else if (mode === 'diet') {
-              if (option === 'herbivoro') return 'Herbívoro';
-              if (option === 'carnivoro') return 'Carnívoro';
-              if (option === 'omnivoro') return 'Omnívoro';
-            }
+            const labels = {
+              domestico: '🏠 Doméstico', salvaje: '🌴 Salvaje',
+              terrestre: '🐾 Terrestre', acuatico: '💧 Acuático', aereo: '🪶 Aéreo',
+              herbivoro: '🌱 Herbívoro', carnivoro: '🥩 Carnívoro', omnivoro: '🍽️ Omnívoro'
+            };
+            return labels[option] || option;
           };
 
           const resetGame = () => {
@@ -709,80 +1126,105 @@
             }
           };
 
+          // ===== Render del canvas =====
           useEffect(() => {
             if (screen === 'game' && canvasRef.current) {
               const canvas = canvasRef.current;
               const ctx = canvas.getContext('2d');
-              
+              const levelData = getCurrentLevelData();
+              const t = timeRef.current;
+
               ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-              const levelData = getCurrentLevelData();
+              // Fondo de selva
+              drawJungleBackground(ctx, canvas.width, canvas.height, levelData.theme, t);
 
-              // Nubes
-              drawCloud(ctx, 100, 50);
-              drawCloud(ctx, 400, 80);
-              drawCloud(ctx, 650, 40);
+              // Decoración de suelo (detrás de plataformas)
+              drawTree(ctx, 60, 450, 1.1);
+              drawTree(ctx, 720, 450, 1.25);
+              drawTree(ctx, 310, 450, 0.9);
+              drawBush(ctx, 170, 450);
+              drawBush(ctx, 520, 450);
+              drawBush(ctx, 660, 450);
+              drawFlower(ctx, 120, 450, '#f472b6');
+              drawFlower(ctx, 420, 450, '#fb923c');
+              drawFlower(ctx, 590, 450, '#a78bfa');
+              drawFlower(ctx, 235, 450, '#f87171');
 
-              // Plataformas
-              ctx.fillStyle = levelData.platformColor;
-              levelData.platforms.forEach(platform => {
-                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-                ctx.strokeStyle = '#654321';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(platform.x, platform.y, platform.width, platform.height);
+              // Plataformas con hierba
+              levelData.platforms.forEach((platform, idx) => {
+                drawPlatform(ctx, platform, levelData.theme, idx === 0);
               });
 
-              // Árboles
-              drawTree(ctx, 50, 410);
-              drawTree(ctx, 700, 410);
-              drawTree(ctx, 300, 410);
-
-              // Cajas
+              // Jaulas con animales
               cagePositions.forEach(cage => {
-                if (!cage.collected) {
-                  ctx.font = '40px Arial';
-                  ctx.fillText('📦', cage.x, cage.y + 35);
-                }
+                if (!cage.collected) drawCage(ctx, cage, t);
               });
 
-              // Personaje
-              drawCharacter(ctx, playerPos.x, playerPos.y, currentCostume, 1.5);
+              // Personaje con sombra
+              ctx.fillStyle = 'rgba(0,0,0,0.18)';
+              ctx.beginPath();
+              ctx.ellipse(playerPos.x, playerPos.y + 55, isJumping ? 12 : 17, 4, 0, 0, Math.PI * 2);
+              ctx.fill();
+
+              drawCharacter(ctx, playerPos.x, playerPos.y, currentCostume, 1.5, {
+                facing: facingRef.current,
+                walk: walkRef.current,
+                jumping: isJumping
+              });
             }
           });
+
+          // ============ PANTALLAS ============
 
           if (screen === 'start') {
             return (
               <div style={{
-                width: '100vw',
-                height: '100vh',
-                background: 'linear-gradient(to bottom, #87CEEB, #90EE90)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Arial, sans-serif',
-                padding: '20px'
+                width: '100vw', height: '100vh',
+                background: 'linear-gradient(to bottom, #7dd3fc 0%, #bae6fd 45%, #86efac 100%)',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                padding: '20px', position: 'relative', overflow: 'hidden'
               }}>
-                <div style={{ fontSize: 'clamp(3rem, 15vw, 5rem)', marginBottom: '20px' }}>🧒</div>
-                <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', color: '#2C5F2D', textShadow: '3px 3px #FFD700', marginBottom: '10px', textAlign: 'center' }}>
+                {/* Decoración */}
+                <div style={{ position: 'absolute', top: '6%', left: '8%', fontSize: '3rem', opacity: 0.9 }} className="anim-float">🌴</div>
+                <div style={{ position: 'absolute', top: '12%', right: '10%', fontSize: '2.5rem', opacity: 0.9 }} className="anim-float">🦜</div>
+                <div style={{ position: 'absolute', bottom: '12%', left: '12%', fontSize: '2.5rem', opacity: 0.9 }} className="anim-float">🐵</div>
+                <div style={{ position: 'absolute', bottom: '18%', right: '8%', fontSize: '3rem', opacity: 0.9 }} className="anim-float">🌺</div>
+
+                <canvas
+                  ref={el => {
+                    if (el) {
+                      const c = el.getContext('2d');
+                      c.clearRect(0, 0, 140, 130);
+                      drawCharacter(c, 70, 55, 'default', 3, { facing: 1, walk: 0, jumping: false });
+                    }
+                  }}
+                  width={140} height={130}
+                  className="anim-bounce"
+                  style={{ marginBottom: '10px' }}
+                  aria-label="Capitulín"
+                />
+
+                <h1 className="title-word" style={{ marginBottom: '4px', textAlign: 'center' }}>
                   CAPITULÍN
                 </h1>
-                <h2 style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', color: '#FF6347', marginBottom: '40px', textAlign: 'center' }}>
-                  Aventura en la Selva
+                <h2 style={{
+                  fontSize: 'clamp(1.1rem, 4.5vw, 1.6rem)', fontWeight: 600,
+                  color: 'var(--color-primary-dark)', marginBottom: '8px', textAlign: 'center'
+                }}>
+                  🌿 Aventura en la Selva 🌿
                 </h2>
+                <p style={{
+                  fontSize: 'clamp(0.95rem, 3.5vw, 1.15rem)', color: 'var(--color-text)',
+                  marginBottom: '36px', textAlign: 'center', maxWidth: '420px'
+                }}>
+                  ¡Rescata a los animales y aprende sus nombres en español e inglés!
+                </p>
                 <button
+                  className="clay-btn btn-orange anim-pop"
                   onClick={() => setScreen('menu')}
-                  style={{
-                    fontSize: 'clamp(1.5rem, 5vw, 2rem)',
-                    padding: '20px 60px',
-                    backgroundColor: '#FF6347',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '20px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    boxShadow: '0 8px #C04030'
-                  }}
+                  style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', padding: '20px 64px' }}
                 >
                   ¡JUGAR! 🎮
                 </button>
@@ -793,106 +1235,55 @@
           if (screen === 'menu') {
             return (
               <div style={{
-                width: '100vw',
-                height: '100vh',
-                background: 'linear-gradient(to bottom, #87CEEB, #90EE90)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Arial, sans-serif',
+                width: '100vw', height: '100vh',
+                background: 'linear-gradient(to bottom, #bae6fd, #dcfce7)',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
                 padding: '20px'
               }}>
-                <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 2.5rem)', color: '#2C5F2D', marginBottom: '40px', textAlign: 'center' }}>
+                <h2 style={{
+                  fontSize: 'clamp(1.6rem, 6vw, 2.5rem)', fontWeight: 700,
+                  color: 'var(--color-text)', marginBottom: '32px', textAlign: 'center'
+                }}>
                   Elige tu Aventura
                 </h2>
-                
+
                 <button
+                  className="clay-btn btn-amber anim-fade"
                   onClick={() => { setGameMode('domestic'); resetGame(); setScreen('game'); }}
-                  style={{
-                    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
-                    padding: '20px 40px',
-                    margin: '15px',
-                    backgroundColor: '#FFD700',
-                    color: '#2C5F2D',
-                    border: '4px solid #FFA500',
-                    borderRadius: '15px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    width: '90%',
-                    maxWidth: '500px'
-                  }}
+                  style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', padding: '20px 32px', margin: '12px', width: '92%', maxWidth: '500px' }}
                 >
-                  🏠 vs 🌴 Domésticos o Salvajes
+                  🏠 vs 🌴 &nbsp;Domésticos o Salvajes
                 </button>
 
                 <button
+                  className="clay-btn btn-blue anim-fade"
                   onClick={() => { setGameMode('habitat'); resetGame(); setScreen('game'); }}
-                  style={{
-                    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
-                    padding: '20px 40px',
-                    margin: '15px',
-                    backgroundColor: '#87CEEB',
-                    color: '#2C5F2D',
-                    border: '4px solid #4682B4',
-                    borderRadius: '15px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    width: '90%',
-                    maxWidth: '500px'
-                  }}
+                  style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', padding: '20px 32px', margin: '12px', width: '92%', maxWidth: '500px', animationDelay: '0.08s' }}
                 >
-                  🚗 🚢 ✈️ Terrestre, Acuático o Aéreo
+                  🐾 💧 🪶 &nbsp;Terrestre, Acuático o Aéreo
                 </button>
 
                 <button
+                  className="clay-btn btn-green anim-fade"
                   onClick={() => { setGameMode('diet'); resetGame(); setScreen('game'); }}
-                  style={{
-                    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
-                    padding: '20px 40px',
-                    margin: '15px',
-                    backgroundColor: '#90EE90',
-                    color: '#2C5F2D',
-                    border: '4px solid #228B22',
-                    borderRadius: '15px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    width: '90%',
-                    maxWidth: '500px'
-                  }}
+                  style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', padding: '20px 32px', margin: '12px', width: '92%', maxWidth: '500px', animationDelay: '0.16s' }}
                 >
-                  🌱 🥩 🍔 Herbívoro, Carnívoro u Omnívoro
+                  🌱 🥩 🍽️ &nbsp;Herbívoro, Carnívoro u Omnívoro
                 </button>
 
-                <div style={{ display: 'flex', gap: '10px', marginTop: '30px' }}>
+                <div style={{ display: 'flex', gap: '14px', marginTop: '30px' }}>
                   <button
+                    className="clay-btn btn-pink"
                     onClick={() => setScreen('stats')}
-                    style={{
-                      fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
-                      padding: '15px 30px',
-                      backgroundColor: '#FF69B4',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '10px',
-                      cursor: 'pointer',
-                      fontWeight: 'bold'
-                    }}
+                    style={{ fontSize: 'clamp(0.95rem, 3vw, 1.2rem)', padding: '15px 30px' }}
                   >
                     📊 Estadísticas
                   </button>
-
                   <button
+                    className="clay-btn btn-orange"
                     onClick={() => setScreen('shop')}
-                    style={{
-                      fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
-                      padding: '15px 30px',
-                      backgroundColor: '#FFA500',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '10px',
-                      cursor: 'pointer',
-                      fontWeight: 'bold'
-                    }}
+                    style={{ fontSize: 'clamp(0.95rem, 3vw, 1.2rem)', padding: '15px 30px' }}
                   >
                     🛍️ Tienda
                   </button>
@@ -904,52 +1295,32 @@
           if (screen === 'stats') {
             return (
               <div style={{
-                width: '100vw',
-                height: '100vh',
-                background: 'linear-gradient(to bottom, #FFE4E1, #FFF0F5)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Arial, sans-serif',
+                width: '100vw', height: '100vh',
+                background: 'linear-gradient(to bottom, #fce7f3, #fef9c3)',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
                 padding: '20px'
               }}>
-                <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 2.5rem)', color: '#FF1493', marginBottom: '30px', textAlign: 'center' }}>
+                <h2 style={{ fontSize: 'clamp(1.6rem, 6vw, 2.5rem)', fontWeight: 700, color: '#be185d', marginBottom: '28px' }}>
                   📊 Estadísticas
                 </h2>
-                
-                <div style={{
-                  backgroundColor: 'white',
-                  padding: '30px',
-                  borderRadius: '20px',
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-                  minWidth: '80%',
-                  maxWidth: '400px'
-                }}>
-                  <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', margin: '20px 0', color: '#333' }}>
+
+                <div className="clay-card anim-pop" style={{ padding: '32px', minWidth: '80%', maxWidth: '400px' }}>
+                  <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.7rem)', margin: '16px 0', color: 'var(--color-text)' }}>
                     🦁 Animales liberados: <strong>{totalAnimalsFreed}</strong>
                   </p>
-                  <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', margin: '20px 0', color: '#333' }}>
+                  <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.7rem)', margin: '16px 0', color: 'var(--color-text)' }}>
                     🎭 Trajes: <strong>{ownedCostumes.length}/8</strong>
                   </p>
-                  <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', margin: '20px 0', color: '#333' }}>
+                  <p style={{ fontSize: 'clamp(1.2rem, 4vw, 1.7rem)', margin: '16px 0', color: 'var(--color-text)' }}>
                     🪙 Monedas: <strong>{coins}</strong>
                   </p>
                 </div>
 
                 <button
+                  className="clay-btn btn-pink"
                   onClick={() => setScreen('menu')}
-                  style={{
-                    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
-                    padding: '15px 40px',
-                    marginTop: '40px',
-                    backgroundColor: '#FF69B4',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '15px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}
+                  style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', padding: '15px 44px', marginTop: '36px' }}
                 >
                   ⬅️ Volver
                 </button>
@@ -960,31 +1331,27 @@
           if (screen === 'shop') {
             return (
               <div style={{
-                width: '100vw',
-                height: '100vh',
-                background: 'linear-gradient(to bottom, #FFE4B5, #FFDAB9)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                fontFamily: 'Arial, sans-serif',
-                padding: '20px',
-                overflowY: 'auto'
+                width: '100vw', height: '100vh',
+                background: 'linear-gradient(to bottom, #fef3c7, #ffedd5)',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'flex-start',
+                padding: '20px', overflowY: 'auto'
               }}>
-                <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 2.5rem)', color: '#8B4513', marginBottom: '20px', textAlign: 'center' }}>
-                  🛍️ Tienda
+                <h2 style={{ fontSize: 'clamp(1.6rem, 6vw, 2.4rem)', fontWeight: 700, color: '#92400e', margin: '10px 0 6px' }}>
+                  🛍️ Tienda de Trajes
                 </h2>
-                <p style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', color: '#D2691E', marginBottom: '30px' }}>
+                <p style={{
+                  fontSize: 'clamp(1rem, 4vw, 1.4rem)', fontWeight: 600, color: '#b45309',
+                  marginBottom: '24px', background: '#fff', padding: '8px 22px',
+                  borderRadius: '999px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                }}>
                   🪙 {coins} monedas
                 </p>
 
                 <div style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-                  gap: '15px',
-                  width: '100%',
-                  maxWidth: '600px',
-                  marginBottom: '20px'
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                  gap: '16px', width: '100%', maxWidth: '640px', marginBottom: '20px'
                 }}>
                   {costumes.map(costume => {
                     const owned = ownedCostumes.includes(costume.id);
@@ -995,53 +1362,74 @@
                       <div
                         key={costume.id}
                         onClick={() => (owned || canBuy) && buyCostume(costume.id)}
+                        className="clay-card"
                         style={{
-                          backgroundColor: isCurrent ? '#FFD700' : owned ? '#90EE90' : canBuy ? 'white' : '#D3D3D3',
-                          padding: '15px',
-                          borderRadius: '15px',
+                          background: isCurrent ? '#fef08a' : owned ? '#dcfce7' : canBuy ? 'white' : '#e5e7eb',
+                          padding: '14px 10px',
                           textAlign: 'center',
                           cursor: (owned || canBuy) ? 'pointer' : 'not-allowed',
-                          border: isCurrent ? '4px solid #FF6347' : '3px solid #8B4513',
-                          boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+                          opacity: (!owned && !canBuy) ? 0.55 : 1,
+                          borderColor: isCurrent ? '#facc15' : 'rgba(0,0,0,0.06)',
+                          transition: 'transform 0.15s'
                         }}
                       >
-                        <div style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: '5px' }}>
-                          {costume.id === 'default' ? '🧒' : 
-                           costume.id === 'superman' ? '🦸' :
-                           costume.id === 'spiderman' ? '🕷️' :
-                           costume.id === 'hulk' ? '💪' :
-                           costume.id === 'thor' ? '⚡' :
-                           costume.id === 'mario' ? '🍄' :
-                           costume.id === 'batman' ? '🦇' : '🤖'}
-                        </div>
-                        <div style={{ fontSize: 'clamp(0.8rem, 3vw, 1.2rem)', fontWeight: 'bold', marginBottom: '5px' }}>
+                        <canvas
+                          ref={el => {
+                            if (el) {
+                              const c = el.getContext('2d');
+                              c.clearRect(0, 0, 90, 100);
+                              drawCharacter(c, 45, 40, costume.id, 1.9, { facing: 1, walk: 0, jumping: false });
+                            }
+                          }}
+                          width={90} height={100}
+                          aria-label={costume.name}
+                        />
+                        <div style={{ fontWeight: 700, fontSize: 'clamp(0.85rem, 3vw, 1.05rem)', color: 'var(--color-text)' }}>
                           {costume.name}
                         </div>
-                        <div style={{ fontSize: 'clamp(0.7rem, 2.5vw, 1rem)', color: '#666' }}>
+                        <div style={{ fontSize: 'clamp(0.8rem, 2.8vw, 0.95rem)', color: '#b45309', fontWeight: 600 }}>
                           {costume.price === 0 ? 'Gratis' : `🪙 ${costume.price}`}
                         </div>
-                        {isCurrent && <div style={{ color: '#FF6347', fontWeight: 'bold', marginTop: '5px', fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)' }}>EQUIPADO</div>}
-                        {owned && !isCurrent && <div style={{ color: '#228B22', fontWeight: 'bold', marginTop: '5px', fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)' }}>Toca para equipar</div>}
+                        {isCurrent && <div style={{ color: '#c2410c', fontWeight: 700, marginTop: '4px', fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)' }}>✓ EQUIPADO</div>}
+                        {owned && !isCurrent && <div style={{ color: '#15803d', fontWeight: 600, marginTop: '4px', fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)' }}>Toca para equipar</div>}
+                        {!owned && !canBuy && <div style={{ color: '#6b7280', fontWeight: 600, marginTop: '4px', fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)' }}>🔒 Bloqueado</div>}
                       </div>
                     );
                   })}
                 </div>
 
                 <button
+                  className="clay-btn btn-orange"
                   onClick={() => gameMode ? setScreen('game') : setScreen('menu')}
-                  style={{
-                    fontSize: 'clamp(1rem, 4vw, 1.5rem)',
-                    padding: '15px 40px',
-                    backgroundColor: '#FF6347',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '15px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    marginTop: '20px'
-                  }}
+                  style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', padding: '15px 40px', margin: '10px 0 30px' }}
                 >
-                  {gameMode ? 'Volver al Juego' : 'Volver al Menú'}
+                  {gameMode ? '⬅️ Volver al Juego' : '⬅️ Volver al Menú'}
+                </button>
+              </div>
+            );
+          }
+
+          if (screen === 'finished') {
+            return (
+              <div style={{
+                width: '100vw', height: '100vh',
+                background: 'linear-gradient(to bottom, #fde68a, #86efac)',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center', padding: '20px'
+              }}>
+                <div style={{ fontSize: 'clamp(4rem, 18vw, 6rem)' }} className="anim-bounce">🏆</div>
+                <h2 style={{ fontSize: 'clamp(1.8rem, 7vw, 3rem)', fontWeight: 700, color: 'var(--color-text)', margin: '16px 0', textAlign: 'center' }}>
+                  ¡Has completado la aventura!
+                </h2>
+                <p style={{ fontSize: 'clamp(1.1rem, 4.5vw, 1.5rem)', color: 'var(--color-text-muted)', marginBottom: '32px', textAlign: 'center' }}>
+                  🦁 Animales liberados: <strong>{totalAnimalsFreed}</strong> · 🪙 Monedas: <strong>{coins}</strong>
+                </p>
+                <button
+                  className="clay-btn btn-green anim-pop"
+                  onClick={() => setScreen('menu')}
+                  style={{ fontSize: 'clamp(1.2rem, 5vw, 1.6rem)', padding: '18px 50px' }}
+                >
+                  Volver al Menú 🏠
                 </button>
               </div>
             );
@@ -1049,72 +1437,44 @@
 
           if (screen === 'game') {
             const levelData = getCurrentLevelData();
-            
+
             return (
               <div style={{
-                width: '100vw',
-                height: '100vh',
-                background: levelData.background,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Arial, sans-serif',
-                position: 'relative',
-                overflow: 'hidden'
+                width: '100vw', height: '100vh',
+                background: levelData.uiBg,
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                position: 'relative', overflow: 'hidden'
               }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '10px',
-                  left: '10px',
-                  display: 'flex',
-                  gap: '10px',
-                  zIndex: 100
-                }}>
+                <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '10px', zIndex: 100 }}>
                   <button
+                    className="clay-btn btn-orange"
                     onClick={() => setScreen('menu')}
-                    style={{
-                      padding: '10px 15px',
-                      backgroundColor: '#FF6347',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '10px',
-                      cursor: 'pointer',
-                      fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
-                      fontWeight: 'bold'
-                    }}
+                    aria-label="Volver al menú"
+                    style={{ padding: '10px 16px', fontSize: '1.1rem', borderRadius: '14px' }}
                   >
                     🏠
                   </button>
                   <button
+                    className="clay-btn btn-amber"
                     onClick={() => setScreen('shop')}
-                    style={{
-                      padding: '10px 15px',
-                      backgroundColor: '#FFA500',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '10px',
-                      cursor: 'pointer',
-                      fontSize: 'clamp(0.8rem, 2.5vw, 1rem)',
-                      fontWeight: 'bold'
-                    }}
+                    aria-label="Abrir tienda"
+                    style={{ padding: '10px 16px', fontSize: '1.1rem', borderRadius: '14px' }}
                   >
                     🛍️
                   </button>
                 </div>
 
                 <div style={{
-                  position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  backgroundColor: 'rgba(255,255,255,0.9)',
-                  padding: '10px 15px',
-                  borderRadius: '10px',
-                  fontSize: 'clamp(0.9rem, 3vw, 1.3rem)',
-                  fontWeight: 'bold',
+                  position: 'absolute', top: '10px', right: '10px',
+                  backgroundColor: 'rgba(255,255,255,0.92)',
+                  padding: '10px 18px', borderRadius: '999px',
+                  fontSize: 'clamp(0.9rem, 3vw, 1.25rem)', fontWeight: 700,
+                  color: 'var(--color-text)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                   zIndex: 100
                 }}>
-                  Nivel {currentLevel} | 🪙 {coins}
+                  Nivel {currentLevel} &nbsp;|&nbsp; 🪙 {coins}
                 </div>
 
                 <canvas
@@ -1122,82 +1482,68 @@
                   width={800}
                   height={500}
                   style={{
-                    border: '5px solid #2C5F2D',
-                    borderRadius: '10px',
+                    border: '5px solid var(--color-primary-dark)',
+                    borderRadius: '16px',
                     width: '100vw',
                     height: 'auto',
-                    maxHeight: '60vh',
-                    backgroundColor: '#8FBC8F'
+                    maxHeight: '62vh',
+                    boxShadow: '0 12px 30px rgba(0,0,0,0.2)'
                   }}
                 />
 
                 {/* CONTROLES TÁCTILES */}
                 <div className="touch-controls">
                   <div className="left-controls">
-                    <div 
+                    <div
                       className="touch-btn"
+                      role="button" aria-label="Izquierda"
                       onTouchStart={() => touchControls.current.left = true}
                       onTouchEnd={() => touchControls.current.left = false}
                       onMouseDown={() => touchControls.current.left = true}
                       onMouseUp={() => touchControls.current.left = false}
+                      onMouseLeave={() => touchControls.current.left = false}
                     >
-                      ⬅️
+                      <ArrowLeftIcon />
                     </div>
-                    <div 
+                    <div
                       className="touch-btn"
+                      role="button" aria-label="Derecha"
                       onTouchStart={() => touchControls.current.right = true}
                       onTouchEnd={() => touchControls.current.right = false}
                       onMouseDown={() => touchControls.current.right = true}
                       onMouseUp={() => touchControls.current.right = false}
+                      onMouseLeave={() => touchControls.current.right = false}
                     >
-                      ➡️
+                      <ArrowRightIcon />
                     </div>
                   </div>
-                  <div 
+                  <div
                     className="touch-btn"
+                    role="button" aria-label="Saltar"
                     onTouchStart={handleJump}
                     onClick={handleJump}
                   >
-                    ⬆️
+                    <JumpIcon />
                   </div>
                 </div>
 
                 {showLevelComplete && (
                   <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    backgroundColor: 'rgba(0,0,0,0.8)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 1000
+                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+                    backgroundColor: 'rgba(20,83,45,0.55)', backdropFilter: 'blur(4px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
                   }}>
-                    <div style={{
-                      backgroundColor: 'white',
-                      padding: '40px',
-                      borderRadius: '20px',
-                      textAlign: 'center'
-                    }}>
-                      <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', color: '#FFD700', marginBottom: '20px' }}>
-                        🎉 ¡NIVEL COMPLETADO! 🎉
+                    <div className="clay-card anim-pop" style={{ padding: '40px', textAlign: 'center', maxWidth: '90%' }}>
+                      <div style={{ fontSize: 'clamp(3rem, 12vw, 4.5rem)' }} className="anim-bounce">🎉</div>
+                      <h2 style={{ fontSize: 'clamp(1.7rem, 7vw, 2.6rem)', fontWeight: 700, color: 'var(--color-secondary-dark)', margin: '12px 0 24px' }}>
+                        ¡NIVEL COMPLETADO!
                       </h2>
                       <button
+                        className="clay-btn btn-green"
                         onClick={nextLevel}
-                        style={{
-                          fontSize: 'clamp(1.2rem, 5vw, 1.5rem)',
-                          padding: '15px 40px',
-                          backgroundColor: '#4CAF50',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '15px',
-                          cursor: 'pointer',
-                          fontWeight: 'bold'
-                        }}
+                        style={{ fontSize: 'clamp(1.2rem, 5vw, 1.5rem)', padding: '16px 44px' }}
                       >
-                        {currentLevel < 5 ? 'Siguiente Nivel ➡️' : '¡Finalizar!'}
+                        {currentLevel < 5 ? 'Siguiente Nivel ➡️' : '¡Finalizar! 🏆'}
                       </button>
                     </div>
                   </div>
@@ -1205,56 +1551,62 @@
 
                 {showQuestion && currentAnimal && (
                   <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    backgroundColor: 'rgba(0,0,0,0.8)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 1000,
-                    padding: '20px'
+                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+                    backgroundColor: 'rgba(20,83,45,0.55)', backdropFilter: 'blur(4px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 1000, padding: '20px'
                   }}>
-                    <div style={{
-                      backgroundColor: 'white',
-                      padding: 'clamp(20px, 5vw, 40px)',
-                      borderRadius: '20px',
-                      textAlign: 'center',
-                      maxWidth: '90%',
-                      maxHeight: '90%',
-                      overflowY: 'auto'
-                    }}>
-                      <div style={{ fontSize: 'clamp(2.5rem, 10vw, 4rem)', marginBottom: '20px' }}>
-                        {currentAnimal.name}
+                    <div
+                      className={"clay-card " + (showFeedback === 'correct' ? 'anim-correct' : showFeedback && showFeedback.type === 'incorrect' ? 'anim-shake' : 'anim-pop')}
+                      style={{
+                        padding: 'clamp(20px, 5vw, 40px)',
+                        textAlign: 'center',
+                        maxWidth: '92%',
+                        maxHeight: '92%',
+                        overflowY: 'auto',
+                        minWidth: 'min(400px, 88vw)'
+                      }}
+                    >
+                      {/* Animal grande + nombre bilingüe */}
+                      <div style={{ fontSize: 'clamp(3.5rem, 14vw, 5.5rem)', lineHeight: 1 }}>
+                        {currentAnimal.emoji}
+                      </div>
+                      <div style={{ margin: '10px 0 6px' }}>
+                        <BilingualName animal={currentAnimal} size="big" />
                       </div>
 
                       {showFeedback === 'correct' && (
-                        <div style={{
-                          fontSize: 'clamp(2rem, 8vw, 3rem)',
-                          color: '#228B22',
-                          fontWeight: 'bold',
-                          marginBottom: '20px'
-                        }}>
-                          ¡CORRECTO! 🎉 +1🪙
+                        <div style={{ marginTop: '14px' }}>
+                          <div style={{
+                            fontSize: 'clamp(1.7rem, 8vw, 2.6rem)',
+                            color: 'var(--color-success)', fontWeight: 700
+                          }}>
+                            ✅ ¡CORRECTO! 🎉
+                          </div>
+                          <div style={{
+                            display: 'inline-block', marginTop: '10px',
+                            background: 'var(--color-success-bg)', color: 'var(--color-success)',
+                            fontWeight: 700, padding: '8px 22px', borderRadius: '999px',
+                            fontSize: 'clamp(1.1rem, 4.5vw, 1.5rem)'
+                          }}>
+                            +1 🪙
+                          </div>
                         </div>
                       )}
 
                       {showFeedback && showFeedback.type === 'incorrect' && (
-                        <div>
+                        <div style={{ marginTop: '14px' }}>
                           <div style={{
-                            fontSize: 'clamp(1.5rem, 6vw, 2rem)',
-                            color: '#FF6347',
-                            fontWeight: 'bold',
-                            marginBottom: '20px'
+                            fontSize: 'clamp(1.3rem, 6vw, 1.9rem)',
+                            color: 'var(--color-error)', fontWeight: 700, marginBottom: '12px'
                           }}>
-                            No es correcto 😊
+                            ❌ No es correcto 😊
                           </div>
                           <div style={{
-                            fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                            color: '#333',
-                            marginBottom: '20px'
+                            display: 'inline-block',
+                            background: 'var(--color-error-bg)',
+                            padding: '10px 24px', borderRadius: '14px',
+                            fontSize: 'clamp(1.1rem, 4.5vw, 1.5rem)', color: 'var(--color-text)'
                           }}>
                             Respuesta correcta: <strong>{getOptionLabel(gameMode, showFeedback.correct)}</strong>
                           </div>
@@ -1262,156 +1614,65 @@
                       )}
 
                       {!showFeedback && (
-                        <>
-                          <h3 style={{ fontSize: 'clamp(1.3rem, 5vw, 2rem)', marginBottom: '30px', color: '#333' }}>
-                            ¿Qué tipo de animal es?
+                        <React.Fragment>
+                          <h3 style={{
+                            fontSize: 'clamp(1.2rem, 4.5vw, 1.7rem)', fontWeight: 600,
+                            margin: '14px 0 22px', color: 'var(--color-text-muted)'
+                          }}>
+                            {gameMode === 'domestic' && '¿Es doméstico o salvaje?'}
+                            {gameMode === 'habitat' && '¿Dónde vive este animal?'}
+                            {gameMode === 'diet' && '¿Qué come este animal?'}
                           </h3>
 
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '15px',
-                            alignItems: 'center'
-                          }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', alignItems: 'center' }}>
                             {gameMode === 'domestic' && (
-                              <>
-                                <button
-                                  onClick={() => handleAnswer('domestico')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#FFD700',
-                                    border: '3px solid #FFA500',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
+                              <React.Fragment>
+                                <button className="clay-btn btn-amber" onClick={() => handleAnswer('domestico')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
                                   🏠 Doméstico
                                 </button>
-                                <button
-                                  onClick={() => handleAnswer('salvaje')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#90EE90',
-                                    border: '3px solid #228B22',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
+                                <button className="clay-btn btn-green" onClick={() => handleAnswer('salvaje')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
                                   🌴 Salvaje
                                 </button>
-                              </>
+                              </React.Fragment>
                             )}
 
                             {gameMode === 'habitat' && (
-                              <>
-                                <button
-                                  onClick={() => handleAnswer('terrestre')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#D2691E',
-                                    color: 'white',
-                                    border: '3px solid #8B4513',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
-                                  🚗 Terrestre
+                              <React.Fragment>
+                                <button className="clay-btn btn-brown" onClick={() => handleAnswer('terrestre')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
+                                  🐾 Terrestre
                                 </button>
-                                <button
-                                  onClick={() => handleAnswer('acuatico')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#4682B4',
-                                    color: 'white',
-                                    border: '3px solid #1E3A8A',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
-                                  🚢 Acuático
+                                <button className="clay-btn btn-blue" onClick={() => handleAnswer('acuatico')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
+                                  💧 Acuático
                                 </button>
-                                <button
-                                  onClick={() => handleAnswer('aereo')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#87CEEB',
-                                    border: '3px solid #4682B4',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
-                                  ✈️ Aéreo
+                                <button className="clay-btn btn-amber" onClick={() => handleAnswer('aereo')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
+                                  🪶 Aéreo
                                 </button>
-                              </>
+                              </React.Fragment>
                             )}
 
                             {gameMode === 'diet' && (
-                              <>
-                                <button
-                                  onClick={() => handleAnswer('herbivoro')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#90EE90',
-                                    border: '3px solid #228B22',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
+                              <React.Fragment>
+                                <button className="clay-btn btn-green" onClick={() => handleAnswer('herbivoro')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
                                   🌱 Herbívoro
                                 </button>
-                                <button
-                                  onClick={() => handleAnswer('carnivoro')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#FF6347',
-                                    color: 'white',
-                                    border: '3px solid #C04030',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
+                                <button className="clay-btn btn-pink" onClick={() => handleAnswer('carnivoro')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
                                   🥩 Carnívoro
                                 </button>
-                                <button
-                                  onClick={() => handleAnswer('omnivoro')}
-                                  style={{
-                                    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)',
-                                    padding: '15px 30px',
-                                    backgroundColor: '#FFD700',
-                                    border: '3px solid #FFA500',
-                                    borderRadius: '15px',
-                                    cursor: 'pointer',
-                                    width: '90%',
-                                    maxWidth: '300px'
-                                  }}
-                                >
-                                  🍔 Omnívoro
+                                <button className="clay-btn btn-amber" onClick={() => handleAnswer('omnivoro')}
+                                  style={{ fontSize: 'clamp(1.15rem, 5vw, 1.6rem)', padding: '16px 30px', width: '92%', maxWidth: '320px' }}>
+                                  🍽️ Omnívoro
                                 </button>
-                              </>
+                              </React.Fragment>
                             )}
                           </div>
-                        </>
+                        </React.Fragment>
                       )}
                     </div>
                   </div>
