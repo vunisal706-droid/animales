@@ -294,7 +294,15 @@
             hulk:      { body: '#7e22ce', bodyD: '#581c87', skin: '#4ade80', hair: '#166534', pants: '#7e22ce', cape: null, mask: null, chest: null, helmet: null },
             thor:      { body: '#334155', bodyD: '#1e293b', skin: '#fcd9b8', hair: '#fbbf24', pants: '#475569', cape: '#dc2626', mask: null, chest: '#cbd5e1', helmet: null, hammer: true },
             ironman:   { body: '#dc2626', bodyD: '#991b1b', skin: '#dc2626', hair: null, pants: '#dc2626', cape: null, mask: 'iron', chest: '#38bdf8', helmet: '#fbbf24' },
-            mario:     { body: '#dc2626', bodyD: '#991b1b', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8', cape: null, mask: null, chest: null, helmet: null, cap: true }
+            mario:     { body: '#dc2626', bodyD: '#991b1b', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8', cape: null, mask: null, chest: null, helmet: null, cap: true, capColor: '#dc2626', capLetter: 'M' },
+            capamerica:{ body: '#1d4ed8', bodyD: '#1e3a8a', skin: '#fcd9b8', hair: null, pants: '#1d4ed8', cape: null, mask: 'capamerica', chest: '#f8fafc', helmet: null, shield: true },
+            flash:     { body: '#dc2626', bodyD: '#991b1b', skin: '#dc2626', hair: null, pants: '#b91c1c', cape: null, mask: 'flash', chest: '#fbbf24', helmet: null },
+            luigi:     { body: '#16a34a', bodyD: '#15803d', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8', cape: null, mask: null, chest: null, helmet: null, cap: true, capColor: '#16a34a', capLetter: 'L' },
+            pikachu:   { body: '#facc15', bodyD: '#eab308', skin: '#facc15', hair: null, pants: '#facc15', cape: null, mask: 'pikachu', chest: null, helmet: null },
+            sonic:     { body: '#1d4ed8', bodyD: '#1e3a8a', skin: '#fef3c7', hair: null, pants: '#1d4ed8', cape: null, mask: 'sonic', chest: null, helmet: null, shoe: '#dc2626', glove: '#f8fafc' },
+            link:      { body: '#16a34a', bodyD: '#15803d', skin: '#fcd9b8', hair: '#fbbf24', pants: '#166534', cape: null, mask: null, chest: '#fbbf24', helmet: null, hat: 'link' },
+            kirby:     { body: '#f9a8d4', bodyD: '#ec4899', skin: '#f9a8d4', hair: null, pants: '#f9a8d4', cape: null, mask: 'kirby', chest: null, helmet: null, shoe: '#dc2626' },
+            pacman:    { body: '#facc15', bodyD: '#eab308', skin: '#111827', hair: null, pants: '#facc15', cape: null, mask: 'pacman', chest: null, helmet: null, glove: '#facc15' }
           }[costume] || null;
           const cfg = C || {
             body: '#e11d48', bodyD: '#9f1239', skin: '#fcd9b8', hair: '#3d2817', pants: '#1d4ed8'
@@ -327,13 +335,13 @@
           ctx.fillStyle = shade(cfg.pants, -25);
           rr(ctx, -7 + legSwing * -0.6, 20, 6, 12, 3); ctx.fill(); ctx.stroke();
           // zapato trasero
-          ctx.fillStyle = '#6b3410';
+          ctx.fillStyle = cfg.shoe ? shade(cfg.shoe, -20) : '#6b3410';
           rr(ctx, -9 + legSwing * -0.6, 30, 9, 5, { tl: 3, tr: 3, br: 3, bl: 3 }); ctx.fill(); ctx.stroke();
 
           // ---- Pierna delantera ----
           ctx.fillStyle = cfg.pants;
           rr(ctx, 1 + legSwing * 0.6, 20, 6, 12, 3); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = '#8b4513';
+          ctx.fillStyle = cfg.shoe || '#8b4513';
           rr(ctx, 0 + legSwing * 0.6, 30, 10, 5, { tl: 3, tr: 4, br: 4, bl: 3 }); ctx.fill(); ctx.stroke();
 
           // ---- Brazo trasero ----
@@ -342,7 +350,7 @@
           ctx.translate(-8, 11);
           ctx.rotate((-armSwing) * 0.06);
           rr(ctx, -2.5, 0, 5, 12, 2.5); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = cfg.skin;
+          ctx.fillStyle = cfg.glove || cfg.skin;
           ctx.beginPath(); ctx.arc(0, 12, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
           ctx.restore();
 
@@ -352,6 +360,14 @@
           grad.addColorStop(1, cfg.bodyD);
           ctx.fillStyle = grad;
           rr(ctx, -9, 6, 18, 17, { tl: 8, tr: 8, br: 6, bl: 6 }); ctx.fill(); ctx.stroke();
+
+          // Cinturón de Link
+          if (costume === 'link') {
+            ctx.fillStyle = '#78350f';
+            rr(ctx, -9, 17, 18, 2.6, 1); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath(); ctx.arc(0, 18.3, 1.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          }
 
           // Emblema en el pecho
           if (cfg.chest) {
@@ -370,13 +386,33 @@
               ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 1;
               ctx.beginPath(); ctx.arc(0, 13, 4.5, 0, Math.PI * 2); ctx.stroke();
               ctx.strokeStyle = OUT; ctx.lineWidth = 1.6;
+            } else if (costume === 'capamerica') { // estrella
+              const cx = 0, cy = 13.5, rOut = 4, rIn = 1.8;
+              ctx.beginPath();
+              for (let i = 0; i < 10; i++) {
+                const ang = -Math.PI / 2 + i * Math.PI / 5;
+                const rr2 = i % 2 === 0 ? rOut : rIn;
+                const px = cx + Math.cos(ang) * rr2;
+                const py = cy + Math.sin(ang) * rr2;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+              }
+              ctx.closePath(); ctx.fill(); ctx.stroke();
+            } else if (costume === 'flash') { // rayo
+              ctx.beginPath();
+              ctx.moveTo(1.5, 8.5); ctx.lineTo(-2.5, 14); ctx.lineTo(0, 14);
+              ctx.lineTo(-1.5, 19.5); ctx.lineTo(3.5, 13); ctx.lineTo(1, 13);
+              ctx.closePath(); ctx.fill(); ctx.stroke();
+            } else if (costume === 'link') { // triángulo dorado
+              ctx.beginPath();
+              ctx.moveTo(0, 9.5); ctx.lineTo(3.3, 14.5); ctx.lineTo(-3.3, 14.5);
+              ctx.closePath(); ctx.fill(); ctx.stroke();
             } else { // rombo/escudo
               ctx.beginPath();
               ctx.moveTo(0, 9); ctx.lineTo(4.5, 13); ctx.lineTo(0, 17.5); ctx.lineTo(-4.5, 13);
               ctx.closePath(); ctx.fill();
               ctx.stroke();
             }
-          } else if (costume === 'mario') {
+          } else if (costume === 'mario' || costume === 'luigi') {
             // Peto vaquero con botones
             ctx.fillStyle = '#1d4ed8';
             rr(ctx, -6, 12, 12, 11, { tl: 3, tr: 3, br: 5, bl: 5 }); ctx.fill(); ctx.stroke();
@@ -399,7 +435,7 @@
           ctx.translate(8, 11);
           ctx.rotate(armSwing * 0.06 + (cfg.hammer ? -0.5 : 0));
           rr(ctx, -2.5, 0, 5, 12, 2.5); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = cfg.skin;
+          ctx.fillStyle = cfg.glove || cfg.skin;
           ctx.beginPath(); ctx.arc(0, 12, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
           // Martillo de Thor
           if (cfg.hammer) {
@@ -410,6 +446,15 @@
             ctx.fillStyle = hg;
             rr(ctx, -6, 20, 13, 8, 2); ctx.fill(); ctx.stroke();
           }
+          // Escudo del Capitán América
+          if (cfg.shield) {
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath(); ctx.arc(0, 17, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath(); ctx.arc(0, 17, 4.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1d4ed8';
+            ctx.beginPath(); ctx.arc(0, 17, 2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          }
           ctx.restore();
 
           // ---- Cabeza (grande, estilo chibi) ----
@@ -419,7 +464,7 @@
           ctx.fill(); ctx.stroke();
 
           // Orejas
-          if (cfg.mask !== 'spider' && cfg.mask !== 'iron') {
+          if (cfg.mask !== 'spider' && cfg.mask !== 'iron' && cfg.mask !== 'pikachu' && cfg.mask !== 'pacman') {
             ctx.fillStyle = cfg.skin;
             ctx.beginPath(); ctx.arc(-10.5, -3, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
           }
@@ -436,6 +481,48 @@
             // orejas de murciélago
             ctx.beginPath(); ctx.moveTo(-8, -11); ctx.lineTo(-6, -19); ctx.lineTo(-3, -12); ctx.closePath(); ctx.fill(); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(8, -11); ctx.lineTo(6, -19); ctx.lineTo(3, -12); ctx.closePath(); ctx.fill(); ctx.stroke();
+          } else if (cfg.mask === 'capamerica') {
+            ctx.fillStyle = cfg.body;
+            ctx.beginPath(); ctx.arc(0, -4, 11, Math.PI * 0.85, Math.PI * 2.15); ctx.fill(); ctx.stroke();
+            // alas laterales del casco
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath(); ctx.moveTo(-9.5, -9); ctx.lineTo(-15, -7.5); ctx.lineTo(-9.5, -4); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(9.5, -9); ctx.lineTo(15, -7.5); ctx.lineTo(9.5, -4); ctx.closePath(); ctx.fill(); ctx.stroke();
+            // estrella pequeña en la frente
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath(); ctx.arc(0, -12.5, 1.8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          } else if (cfg.mask === 'flash') {
+            ctx.fillStyle = cfg.body;
+            ctx.beginPath(); ctx.arc(0, -4, 11, Math.PI * 0.85, Math.PI * 2.15); ctx.fill(); ctx.stroke();
+            // alitas de rayo en las orejas
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath(); ctx.moveTo(-9, -9); ctx.lineTo(-14, -13); ctx.lineTo(-9.5, -9.5); ctx.lineTo(-12, -6); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(9, -9); ctx.lineTo(14, -13); ctx.lineTo(9.5, -9.5); ctx.lineTo(12, -6); ctx.closePath(); ctx.fill(); ctx.stroke();
+          } else if (cfg.mask === 'pikachu') {
+            // orejas puntiagudas amarillas con punta negra
+            ctx.fillStyle = cfg.body;
+            ctx.beginPath(); ctx.moveTo(-7.5, -11); ctx.lineTo(-11, -25); ctx.lineTo(-3, -13); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(7.5, -11); ctx.lineTo(11, -25); ctx.lineTo(3, -13); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1f2937';
+            ctx.beginPath(); ctx.moveTo(-9, -18.5); ctx.lineTo(-11, -25); ctx.lineTo(-6.5, -19); ctx.closePath(); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(9, -18.5); ctx.lineTo(11, -25); ctx.lineTo(6.5, -19); ctx.closePath(); ctx.fill();
+          } else if (cfg.mask === 'sonic') {
+            // púas hacia atrás
+            ctx.fillStyle = cfg.body;
+            ctx.beginPath(); ctx.moveTo(-9, -9); ctx.quadraticCurveTo(-17, -10, -20, -5); ctx.quadraticCurveTo(-13, -7, -8, -3); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-9, -13); ctx.quadraticCurveTo(-18, -16, -21, -11); ctx.quadraticCurveTo(-13, -12, -8, -8); ctx.closePath(); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-6, -17); ctx.quadraticCurveTo(-14, -22, -17, -18); ctx.quadraticCurveTo(-10, -17, -5, -12); ctx.closePath(); ctx.fill(); ctx.stroke();
+          } else if (cfg.mask === 'pacman') {
+            // cabeza amarilla con boca en cuña (el hueco deja ver cfg.skin oscuro = interior de la boca)
+            const mouthOpen = 0.55;
+            ctx.fillStyle = cfg.body;
+            ctx.beginPath();
+            ctx.moveTo(0, -4);
+            ctx.arc(0, -4, 11.5, mouthOpen, Math.PI * 2 - mouthOpen, false);
+            ctx.closePath();
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1f2937';
+            ctx.beginPath(); ctx.arc(-1.5, -11.5, 1.7, 0, Math.PI * 2); ctx.fill();
           } else if (cfg.hair) {
             ctx.fillStyle = cfg.hair;
             ctx.beginPath();
@@ -454,17 +541,35 @@
             ctx.closePath(); ctx.fill();
           }
 
-          // Gorra de Mario
+          // Gorra de Mario / Luigi
           if (cfg.cap) {
-            ctx.fillStyle = '#dc2626';
+            const capColor = cfg.capColor || '#dc2626';
+            const capLetter = cfg.capLetter || 'M';
+            ctx.fillStyle = capColor;
             ctx.beginPath(); ctx.arc(0, -8, 10.5, Math.PI, Math.PI * 2); ctx.fill(); ctx.stroke();
             rr(ctx, 2, -10, 12, 4, { tl: 1, tr: 4, br: 4, bl: 1 }); ctx.fill(); ctx.stroke();
             ctx.fillStyle = '#fff';
             ctx.beginPath(); ctx.arc(0, -11, 3.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#dc2626';
+            ctx.fillStyle = capColor;
             ctx.font = 'bold 5px Fredoka, Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('M', 0, -9.2);
+            ctx.fillText(capLetter, 0, -9.2);
+          }
+
+          // Gorro puntiagudo de Link
+          if (cfg.hat === 'link') {
+            ctx.fillStyle = cfg.body;
+            ctx.beginPath();
+            ctx.moveTo(-9.5, -8);
+            ctx.quadraticCurveTo(-4, -23, 7, -20);
+            ctx.quadraticCurveTo(15, -17, 10.5, -8);
+            ctx.quadraticCurveTo(0, -13, -9.5, -8);
+            ctx.closePath();
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle = shade(cfg.body, -20);
+            ctx.beginPath();
+            ctx.ellipse(0.5, -8.5, 10.4, 2.8, 0, 0, Math.PI, true);
+            ctx.fill(); ctx.stroke();
           }
 
           // ---- Ojos grandes cartoon ----
@@ -479,6 +584,15 @@
             ctx.fillStyle = '#7dd3fc';
             rr(ctx, -7, eyeY - 1.5, 5, 3, 1.5); ctx.fill();
             rr(ctx, 2.5, eyeY - 1.5, 5, 3, 1.5); ctx.fill();
+          } else if (cfg.mask === 'pacman') {
+            // el ojo ya se dibujó junto con la cabeza en cuña
+          } else if (cfg.mask === 'kirby') {
+            ctx.fillStyle = '#1d4ed8';
+            ctx.beginPath(); ctx.ellipse(-3.5, eyeY + 0.5, 2, 3.6, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(4.5, eyeY + 0.5, 2, 3.6, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc(-2.9, eyeY - 0.7, 0.7, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(5.1, eyeY - 0.7, 0.7, 0, Math.PI * 2); ctx.fill();
           } else {
             // esclerótica
             ctx.fillStyle = '#fff';
@@ -501,14 +615,18 @@
           }
 
           // Mofletes
-          if (cfg.mask !== 'spider' && cfg.mask !== 'iron' && costume !== 'hulk') {
+          if (costume === 'pikachu' || costume === 'kirby') {
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath(); ctx.ellipse(-8, 0.5, 3, 2.3, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(8.5, 0.5, 3, 2.3, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          } else if (cfg.mask !== 'spider' && cfg.mask !== 'iron' && cfg.mask !== 'pacman' && costume !== 'hulk') {
             ctx.fillStyle = 'rgba(244,114,182,0.45)';
             ctx.beginPath(); ctx.ellipse(-7, 0.5, 2, 1.3, 0, 0, Math.PI * 2); ctx.fill();
             ctx.beginPath(); ctx.ellipse(7.5, 0.5, 2, 1.3, 0, 0, Math.PI * 2); ctx.fill();
           }
 
           // Nariz + sonrisa
-          if (cfg.mask !== 'spider' && cfg.mask !== 'iron') {
+          if (cfg.mask !== 'spider' && cfg.mask !== 'iron' && cfg.mask !== 'pacman') {
             ctx.fillStyle = shade(cfg.skin, -35);
             ctx.beginPath(); ctx.ellipse(0.5, -0.5, 1.4, 1, 0, 0, Math.PI * 2); ctx.fill();
             ctx.strokeStyle = '#7c2d12';
@@ -909,6 +1027,31 @@
           const walkRef = useRef(0);
           const timeRef = useRef(0);
           const prevWorldW = useRef(null);
+          // Refs "espejo" del jugador: el bucle del juego lee/escribe aquí en cada
+          // fotograma para no depender de playerPos/velocity/isJumping (eso obligaba
+          // a recrear el setInterval 60 veces por segundo y era la causa de que el
+          // personaje se quedara "pillado" en dispositivos más lentos).
+          const posRef = useRef({ x: 50, y: 300 });
+          const velRef = useRef({ x: 0, y: 0 });
+          const jumpingRef = useRef(false);
+
+          // Si el usuario cambia de pestaña/app con una tecla o control táctil
+          // pulsado, el evento de "soltar" nunca llega y el personaje se queda
+          // moviéndose (o bloqueado contra un borde) para siempre. Lo evitamos
+          // limpiando todos los controles al perder el foco.
+          useEffect(() => {
+            const clearControls = () => {
+              keysPressed.current = {};
+              touchControls.current = { left: false, right: false, jump: false };
+            };
+            window.addEventListener('blur', clearControls);
+            document.addEventListener('visibilitychange', () => {
+              if (document.hidden) clearControls();
+            });
+            return () => {
+              window.removeEventListener('blur', clearControls);
+            };
+          }, []);
 
           // Viewport para pantalla completa
           const [view, setView] = useState({ w: window.innerWidth, h: window.innerHeight });
@@ -933,6 +1076,7 @@
           useEffect(() => {
             if (prevWorldW.current && prevWorldW.current !== worldW) {
               const ratio = worldW / prevWorldW.current;
+              posRef.current = { ...posRef.current, x: posRef.current.x * ratio };
               setPlayerPos(p => ({ ...p, x: p.x * ratio }));
             }
             prevWorldW.current = worldW;
@@ -985,14 +1129,22 @@
           ];
 
           const costumes = [
-            { id: 'default',   name: 'Capitulín',  price: 0 },
-            { id: 'superman',  name: 'Superman',   price: 5 },
-            { id: 'spiderman', name: 'Spiderman',  price: 5 },
-            { id: 'hulk',      name: 'Hulk',       price: 5 },
-            { id: 'thor',      name: 'Thor',       price: 5 },
-            { id: 'mario',     name: 'Mario Bros', price: 5 },
-            { id: 'batman',    name: 'Batman',     price: 5 },
-            { id: 'ironman',   name: 'Iron Man',   price: 5 }
+            { id: 'default',    name: 'Capitulín',       price: 0 },
+            { id: 'superman',   name: 'Superman',        price: 5 },
+            { id: 'spiderman',  name: 'Spiderman',       price: 5 },
+            { id: 'hulk',       name: 'Hulk',            price: 5 },
+            { id: 'thor',       name: 'Thor',            price: 5 },
+            { id: 'mario',      name: 'Mario Bros',      price: 5 },
+            { id: 'batman',     name: 'Batman',          price: 5 },
+            { id: 'ironman',    name: 'Iron Man',        price: 5 },
+            { id: 'capamerica', name: 'Capitán América', price: 5 },
+            { id: 'flash',      name: 'Flash',           price: 5 },
+            { id: 'luigi',      name: 'Luigi',           price: 5 },
+            { id: 'pikachu',    name: 'Pikachu',         price: 5 },
+            { id: 'sonic',      name: 'Sonic',           price: 5 },
+            { id: 'link',       name: 'Link',            price: 5 },
+            { id: 'kirby',      name: 'Kirby',           price: 5 },
+            { id: 'pacman',     name: 'Pac-Man',         price: 5 }
           ];
 
           const getCurrentLevelData = () => LEVELS[`level${currentLevel}`] || LEVELS.level1;
@@ -1011,12 +1163,14 @@
               }, 1000 / 60);
               return () => { if (gameLoopRef.current) clearInterval(gameLoopRef.current); };
             }
-          }, [screen, showQuestion, showLevelComplete, playerPos.x, playerPos.y, velocity.y, isJumping, view.w, view.h]);
+          }, [screen, showQuestion, showLevelComplete, view.w, view.h, currentLevel, cagePositions]);
 
           useEffect(() => {
             const handleKeyDown = (e) => {
               keysPressed.current[e.key] = true;
-              if ((e.key === 'ArrowUp' || e.key === ' ') && !isJumping && !showQuestion && !showLevelComplete) {
+              if ((e.key === 'ArrowUp' || e.key === ' ') && !jumpingRef.current && !showQuestion && !showLevelComplete) {
+                velRef.current = { ...velRef.current, y: -15 };
+                jumpingRef.current = true;
                 setVelocity(v => ({ ...v, y: -15 }));
                 setIsJumping(true);
               }
@@ -1028,18 +1182,65 @@
               window.removeEventListener('keydown', handleKeyDown);
               window.removeEventListener('keyup', handleKeyUp);
             };
-          }, [isJumping, showQuestion, showLevelComplete]);
+          }, [showQuestion, showLevelComplete]);
+
+          // Barajado Fisher-Yates (el sort(() => Math.random()-0.5) anterior
+          // no garantizaba una distribución realmente aleatoria)
+          const shuffleArray = (arr) => {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+          };
+
+          // Propiedad del animal que define su "categoría" según el modo de juego
+          const CATEGORY_BY_MODE = { domestic: 'domestic', habitat: 'habitat', diet: 'diet' };
 
           const generateCages = () => {
             const levelData = getCurrentLevelData();
-            // Barajamos animales para asignar uno visible a cada jaula
-            const shuffled = [...allAnimals].sort(() => Math.random() - 0.5);
+            const cageCount = levelData.platforms.length - 1;
+            const categoryKey = CATEGORY_BY_MODE[gameMode];
+
+            let pool;
+            if (categoryKey) {
+              // Agrupamos los animales por categoría (p.ej. terrestre/acuático/aéreo)
+              // y repartimos en "round robin" entre categorías para que cada
+              // pantalla mezcle siempre las distintas opciones, en vez de dejarlo
+              // al azar (donde podían salir casi todos de la misma categoría).
+              const groups = {};
+              allAnimals.forEach(a => {
+                const key = a[categoryKey];
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(a);
+              });
+              const categoryNames = shuffleArray(Object.keys(groups));
+              categoryNames.forEach(name => { groups[name] = shuffleArray(groups[name]); });
+
+              pool = [];
+              let added = true;
+              while (pool.length < cageCount && added) {
+                added = false;
+                for (const name of categoryNames) {
+                  if (pool.length >= cageCount) break;
+                  if (groups[name].length > 0) {
+                    pool.push(groups[name].shift());
+                    added = true;
+                  }
+                }
+              }
+              pool = shuffleArray(pool);
+            } else {
+              pool = shuffleArray(allAnimals);
+            }
+
             const newCages = levelData.platforms.slice(1).map((platform, idx) => ({
               platformIdx: idx + 1, // posición calculada siempre desde su plataforma (soporta resize)
               collected: false,
               id: idx,
-              emoji: shuffled[idx % shuffled.length].emoji,
-              animal: shuffled[idx % shuffled.length]
+              emoji: pool[idx % pool.length].emoji,
+              animal: pool[idx % pool.length]
             }));
             setCagePositions(newCages);
           };
@@ -1060,56 +1261,61 @@
             const platforms = getScaledPlatforms(levelData);
             timeRef.current += 1;
 
-            setPlayerPos(prev => {
-              let newX = prev.x;
-              let moving = false;
-              if (keysPressed.current['ArrowLeft'] || touchControls.current.left) {
-                newX -= 5; facingRef.current = -1; moving = true;
-              }
-              if (keysPressed.current['ArrowRight'] || touchControls.current.right) {
-                newX += 5; facingRef.current = 1; moving = true;
-              }
-              if (moving) walkRef.current += 0.35;
-              newX = Math.max(20, Math.min(worldW - 20, newX));
-              return { ...prev, x: newX };
-            });
+            // --- Movimiento horizontal (leído/escrito solo en refs) ---
+            let newX = posRef.current.x;
+            let moving = false;
+            if (keysPressed.current['ArrowLeft'] || touchControls.current.left) {
+              newX -= 5; facingRef.current = -1; moving = true;
+            }
+            if (keysPressed.current['ArrowRight'] || touchControls.current.right) {
+              newX += 5; facingRef.current = 1; moving = true;
+            }
+            if (moving) walkRef.current += 0.35;
+            newX = Math.max(20, Math.min(worldW - 20, newX));
 
-            setVelocity(prev => {
-              let newVelY = prev.y + 0.6;
-              platforms.forEach(platform => {
-                if (
-                  playerPos.x + 20 > platform.x &&
-                  playerPos.x - 20 < platform.x + platform.width &&
-                  playerPos.y + 45 >= platform.y &&
-                  playerPos.y + 45 <= platform.y + 20 &&
-                  newVelY >= 0
-                ) {
-                  newVelY = 0;
-                  setPlayerPos(p => ({ ...p, y: platform.y - 45 }));
-                  setIsJumping(false);
-                }
-              });
-              return { ...prev, y: newVelY };
+            // --- Gravedad y colisión con plataformas ---
+            let newVelY = velRef.current.y + 0.6;
+            let newY = posRef.current.y;
+            let landed = false;
+            platforms.forEach(platform => {
+              if (
+                newX + 20 > platform.x &&
+                newX - 20 < platform.x + platform.width &&
+                posRef.current.y + 45 >= platform.y &&
+                posRef.current.y + 45 <= platform.y + 20 &&
+                newVelY >= 0
+              ) {
+                newVelY = 0;
+                newY = platform.y - 45;
+                landed = true;
+                jumpingRef.current = false;
+              }
             });
+            if (!landed) {
+              newY = Math.min(posRef.current.y + newVelY, 455);
+            }
 
-            setPlayerPos(prev => ({
-              ...prev,
-              y: Math.min(prev.y + velocity.y, 455)
-            }));
+            posRef.current = { x: newX, y: newY };
+            velRef.current = { x: 0, y: newVelY };
+
+            // Una sola actualización de estado por fotograma (para renderizar)
+            setPlayerPos({ x: newX, y: newY });
+            setVelocity({ x: 0, y: newVelY });
+            setIsJumping(jumpingRef.current);
 
             cagePositions.forEach(cage => {
               if (cage.collected) return;
               const pos = cageWorldPos(cage, platforms);
               if (
-                Math.abs(playerPos.x - pos.x - 20) < 40 &&
-                Math.abs(playerPos.y - pos.y - 20) < 45
+                Math.abs(newX - pos.x - 20) < 40 &&
+                Math.abs(newY - pos.y - 20) < 45
               ) {
                 collectCage(cage.id);
               }
             });
 
-            const allCollected = cagePositions.every(cage => cage.collected);
-            if (allCollected && cagePositions.length > 0 && !showLevelComplete) {
+            const allCollected = cagePositions.length > 0 && cagePositions.every(cage => cage.collected);
+            if (allCollected && !showLevelComplete) {
               completeLevel();
             }
           };
@@ -1134,6 +1340,9 @@
           const nextLevel = () => {
             if (currentLevel < 5) {
               setCurrentLevel(currentLevel + 1);
+              posRef.current = { x: 50, y: 300 };
+              velRef.current = { x: 0, y: 0 };
+              jumpingRef.current = false;
               setPlayerPos({ x: 50, y: 300 });
               setVelocity({ x: 0, y: 0 });
               setIsJumping(false);
@@ -1202,6 +1411,9 @@
 
           const resetGame = () => {
             setCurrentLevel(1);
+            posRef.current = { x: 50, y: 300 };
+            velRef.current = { x: 0, y: 0 };
+            jumpingRef.current = false;
             setPlayerPos({ x: 50, y: 300 });
             setVelocity({ x: 0, y: 0 });
             setIsJumping(false);
@@ -1214,7 +1426,9 @@
           };
 
           const handleJump = () => {
-            if (!isJumping && !showQuestion && !showLevelComplete) {
+            if (!jumpingRef.current && !showQuestion && !showLevelComplete) {
+              velRef.current = { ...velRef.current, y: -15 };
+              jumpingRef.current = true;
               setVelocity(v => ({ ...v, y: -15 }));
               setIsJumping(true);
             }
@@ -1624,6 +1838,7 @@
                       role="button" aria-label="Izquierda"
                       onTouchStart={() => touchControls.current.left = true}
                       onTouchEnd={() => touchControls.current.left = false}
+                      onTouchCancel={() => touchControls.current.left = false}
                       onMouseDown={() => touchControls.current.left = true}
                       onMouseUp={() => touchControls.current.left = false}
                       onMouseLeave={() => touchControls.current.left = false}
@@ -1635,6 +1850,7 @@
                       role="button" aria-label="Derecha"
                       onTouchStart={() => touchControls.current.right = true}
                       onTouchEnd={() => touchControls.current.right = false}
+                      onTouchCancel={() => touchControls.current.right = false}
                       onMouseDown={() => touchControls.current.right = true}
                       onMouseUp={() => touchControls.current.right = false}
                       onMouseLeave={() => touchControls.current.right = false}
