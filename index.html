@@ -123,9 +123,9 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(255, 255, 255, 0.6);
+            touch-action: none;
+            -webkit-user-select: none;
             border: 2px solid rgba(255,255,255,0.6);
             box-shadow: 0 4px 12px rgba(0,0,0,0.18);
             display: flex;
@@ -1158,10 +1158,27 @@
           useEffect(() => {
             const paused = IS_TOUCH && view.h > view.w;
             if (screen === 'game' && !showQuestion && !showLevelComplete && !paused) {
-              gameLoopRef.current = setInterval(() => {
-                updateGame();
-              }, 1000 / 60);
-              return () => { if (gameLoopRef.current) clearInterval(gameLoopRef.current); };
+              // Lógica a 60 pasos/s fijos aunque el equipo pinte menos fotogramas
+              // (pizarras digitales y PCs lentos): el personaje va a la misma velocidad en todos.
+              const STEP = 1000 / 60;
+              let last = performance.now(), acc = 0, stopped = false;
+              const frame = (now) => {
+                if (stopped) return;
+                acc += Math.min(now - last, 250);
+                last = now;
+                let steps = 0;
+                ReactDOM.unstable_batchedUpdates(() => {
+                  while (acc >= STEP && steps < 6) {
+                    acc -= STEP; steps++;
+                    // Si se recoge una jaula o termina el nivel, no seguir en este fotograma
+                    if (updateGame()) { acc = 0; break; }
+                  }
+                });
+                if (steps >= 6) acc = 0;
+                gameLoopRef.current = requestAnimationFrame(frame);
+              };
+              gameLoopRef.current = requestAnimationFrame(frame);
+              return () => { stopped = true; cancelAnimationFrame(gameLoopRef.current); };
             }
           }, [screen, showQuestion, showLevelComplete, view.w, view.h, currentLevel, cagePositions]);
 
@@ -1303,6 +1320,7 @@
             setVelocity({ x: 0, y: newVelY });
             setIsJumping(jumpingRef.current);
 
+            let eventHappened = false;
             cagePositions.forEach(cage => {
               if (cage.collected) return;
               const pos = cageWorldPos(cage, platforms);
@@ -1310,14 +1328,16 @@
                 Math.abs(newX - pos.x - 20) < 40 &&
                 Math.abs(newY - pos.y - 20) < 45
               ) {
-                collectCage(cage.id);
+                if (!eventHappened) { collectCage(cage.id); eventHappened = true; }
               }
             });
 
             const allCollected = cagePositions.length > 0 && cagePositions.every(cage => cage.collected);
-            if (allCollected && !showLevelComplete) {
+            if (allCollected && !showLevelComplete && !eventHappened) {
               completeLevel();
+              eventHappened = true;
             }
+            return eventHappened;
           };
 
           const collectCage = (cageId) => {
@@ -1444,7 +1464,10 @@
               const t = timeRef.current;
 
               // Resolución nativa del dispositivo → dibujo vectorial nítido
-              const dpr = Math.min(window.devicePixelRatio || 1, 3);
+              // ...pero con un tope de píxeles para que pizarras 4K y PCs lentos no se atasquen
+              let dpr = Math.min(window.devicePixelRatio || 1, 3);
+              const MAX_PX = 1920 * 1080;
+              if (view.w * view.h * dpr * dpr > MAX_PX) dpr = Math.sqrt(MAX_PX / (view.w * view.h));
               const pw = Math.round(view.w * dpr);
               const ph = Math.round(view.h * dpr);
               if (canvas.width !== pw || canvas.height !== ph) {
@@ -1836,24 +1859,22 @@
                     <div
                       className="touch-btn"
                       role="button" aria-label="Izquierda"
-                      onTouchStart={() => touchControls.current.left = true}
-                      onTouchEnd={() => touchControls.current.left = false}
-                      onTouchCancel={() => touchControls.current.left = false}
-                      onMouseDown={() => touchControls.current.left = true}
-                      onMouseUp={() => touchControls.current.left = false}
-                      onMouseLeave={() => touchControls.current.left = false}
+                      onPointerDown={(e) => { e.preventDefault(); touchControls.current.left = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {} }}
+                      onPointerUp={() => touchControls.current.left = false}
+                      onPointerCancel={() => touchControls.current.left = false}
+                      onLostPointerCapture={() => touchControls.current.left = false}
+                      onContextMenu={(e) => e.preventDefault()}
                     >
                       <ArrowLeftIcon />
                     </div>
                     <div
                       className="touch-btn"
                       role="button" aria-label="Derecha"
-                      onTouchStart={() => touchControls.current.right = true}
-                      onTouchEnd={() => touchControls.current.right = false}
-                      onTouchCancel={() => touchControls.current.right = false}
-                      onMouseDown={() => touchControls.current.right = true}
-                      onMouseUp={() => touchControls.current.right = false}
-                      onMouseLeave={() => touchControls.current.right = false}
+                      onPointerDown={(e) => { e.preventDefault(); touchControls.current.right = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {} }}
+                      onPointerUp={() => touchControls.current.right = false}
+                      onPointerCancel={() => touchControls.current.right = false}
+                      onLostPointerCapture={() => touchControls.current.right = false}
+                      onContextMenu={(e) => e.preventDefault()}
                     >
                       <ArrowRightIcon />
                     </div>
@@ -1861,8 +1882,8 @@
                   <div
                     className="touch-btn jump-btn"
                     role="button" aria-label="Saltar"
-                    onTouchStart={handleJump}
-                    onClick={handleJump}
+                    onPointerDown={(e) => { e.preventDefault(); handleJump(); }}
+                    onContextMenu={(e) => e.preventDefault()}
                   >
                     <JumpIcon />
                   </div>
@@ -2025,7 +2046,7 @@
           return null;
         };
 
-        ReactDOM.render(<CapitulinGame />, document.getElementById('root'));
+        ReactDOM.createRoot(document.getElementById('root')).render(<CapitulinGame />);
     </script>
 </body>
 </html>
